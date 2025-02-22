@@ -74,6 +74,9 @@ Game-specific compatibility can be [found here](https://github.com/Nukem9/dlssg-
 <details>
   <summary>Click to expand.</summary><br/>
 
+**Version 0.122**
+  - Removed a workaround for Indiana Jones and the Great Circle as it is no longer necessary.
+
 **Version 0.121**
   - Added additional error logging.
   - Added future proofing for RTX Remix-based games.
