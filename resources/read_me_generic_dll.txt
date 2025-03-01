@@ -5,7 +5,7 @@ tweaks. Each game has different requirements and might use different DLLs. All v
 
 DO NOT USE IN MULTIPLAYER GAMES.
 
-"XXXX.dll" is "version.dll" or "winhttp.dll" or "dbghelp.dll".
+"XXXX.dll" is "version.dll" or "winhttp.dll" or "dbghelp.dll" or "cryptsp.dll".
 
 =====================================
 ===== Installation instructions =====

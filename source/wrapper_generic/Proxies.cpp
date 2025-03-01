@@ -82,7 +82,8 @@ void *CustomLibraryResolverCallback()
 			}
 			else if (_wcsicmp(targetLibraryName, L"dbghelp.dll") == 0 ||
 				_wcsicmp(targetLibraryName, L"winhttp.dll") == 0 ||
-				_wcsicmp(targetLibraryName, L"version.dll") == 0)
+				_wcsicmp(targetLibraryName, L"version.dll") == 0 ||
+				_wcsicmp(targetLibraryName, L"cryptsp.dll") == 0)
 			{
 				// Check system32
 				EnableAggressiveHooking = true;
