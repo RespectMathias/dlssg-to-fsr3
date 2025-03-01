@@ -264,6 +264,44 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 			LoadLibraryW(L"d3d12-burstcapture.dll");
 		}
 
+		// "Should we inform our players that modded DLLs are unsupported? Nah, let's intentionally corrupt memory
+		// and crash the game instead." ~ Braindead developers.
+		if (GetModuleHandleW(L"MonsterHunterWilds.exe"))
+		{
+			const bool isMHWWorkaroundInstalled = []()
+			{
+				if (!EnableAggressiveHooking)
+					return true;
+
+				if (GetModuleHandleW(L"SpecialK64.dll"))
+					return true;
+
+				// Check if REFramework's dinput8.dll is present. It goes as far as unlinking/renaming  in the PEB
+				// to prevent anti-tamper detection.
+				wchar_t executableDir[2048];
+				if (Util::GetModulePath(executableDir, true, GetModuleHandleW(nullptr)))
+				{
+					wcscat_s(executableDir, L"dinput8.dll");
+
+					if (GetFileAttributesW(executableDir) != INVALID_FILE_ATTRIBUTES)
+						return true;
+				}
+
+				return false;
+			}();
+
+			if (!isMHWWorkaroundInstalled)
+			{
+				MessageBoxW(
+					nullptr,
+					L"Monster Hunter Wilds does not support third-party modifications and will crash with dlssg-to-fsr3 loaded.\n\n\nTo "
+					L"work around these crashes, first install the latest version of REFramework or install Special-K and use its ASI "
+					L"plugin system instead.\n\n\ndlssg-to-fsr3 does not support multiplayer games. Continue at your own risk.",
+					L"dlssg-to-fsr3",
+					MB_ICONWARNING);
+			}
+		}
+
 		if (EnableAggressiveHooking)
 			ApplyAggressiveHookingWorkarounds();
 
