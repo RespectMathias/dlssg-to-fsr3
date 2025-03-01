@@ -203,7 +203,7 @@ void ApplyAggressiveHookingWorkarounds()
 {
 	// Prevent EGS's overlay from loading
 	TargetLibrariesToHook.push_back(TargetEGSServicesDll);
-	LoadLibraryW(TargetEGSServicesDll);
+	LoadLibraryExW(TargetEGSServicesDll, nullptr, LOAD_LIBRARY_SEARCH_USER_DIRS | LOAD_LIBRARY_SEARCH_APPLICATION_DIR);
 
 	// NvRemixBridge doesn't use Streamline. Use nvngx.dll in lieu of sl.interposer.dll.
 	if (GetModuleHandleW(L"NvRemixBridge.exe"))
