@@ -215,7 +215,29 @@ NGXDLLEXPORT NGXResult NVSDK_NGX_VULKAN_Init_Ext2(
 	else
 		spdlog::warn("Hardware accelerated GPU scheduling is disabled on this adapter.");
 
-	spdlog::info("Present metering interface status is unknown. This is not an error.");
+	auto hasPresentMeteringAPI = [&]()
+	{
+#if defined(VK_ENABLE_BETA_EXTENSIONS) && defined(VK_NV_PRESENT_METERING_EXTENSION_NAME)
+		VkPhysicalDevicePresentMeteringFeaturesNV presentMeteringFeatures = {
+			.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_METERING_FEATURES_NV,
+		};
+
+		VkPhysicalDeviceFeatures2 features = {
+			.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
+			.pNext = &presentMeteringFeatures,
+		};
+
+		vkGetPhysicalDeviceFeatures2(PhysicalDevice, &features);
+		return presentMeteringFeatures.presentMetering == VK_TRUE;
+#else
+		return false;
+#endif
+	};
+
+	if (hasPresentMeteringAPI())
+		spdlog::info("Present metering interface is available.");
+	else
+		spdlog::info("Present metering interface is unimplemented. This is not an error.");
 
 	return NGX_SUCCESS;
 }
