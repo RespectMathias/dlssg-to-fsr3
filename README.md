@@ -74,6 +74,10 @@ Game-specific compatibility can be [found here](https://github.com/Nukem9/dlssg-
 <details>
   <summary>Click to expand.</summary><br/>
 
+**Version 0.130**
+  - Added support for newer Streamline plugin interposer paths.
+  - Added logging for Vulkan present metering availability.
+
 **Version 0.123**
   - Added a warning prompt because Monster Hunter Wilds crashes without REFramework installed. Once again, multiplayer games aren't supported.
 
