@@ -52,7 +52,6 @@ if(BUILD_OUTPUT_WRAPPER STREQUAL "UNIVERSAL")
     install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_version" "read_me_generic_dll.txt" "version.dll")
     install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_winhttp" "read_me_generic_dll.txt" "winhttp.dll")
     install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_dbghelp" "read_me_generic_dll.txt" "dbghelp.dll")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_cryptsp" "read_me_generic_dll.txt" "cryptsp.dll")
 
 elseif(BUILD_OUTPUT_WRAPPER STREQUAL "DLSSTWEAKS")
 

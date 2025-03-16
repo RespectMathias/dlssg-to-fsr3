@@ -11,7 +11,7 @@ Game-specific compatibility can be [found here](https://github.com/Nukem9/dlssg-
 <details>
 <summary>Universal Method <b>(Recommended)</b></summary><br/>
 
-  1. Pick **one** of the included generic DLLs to use. Possible options are `version.dll`, `winhttp.dll`, `dbghelp.dll`, or `cryptsp.dll`. We'll choose `version.dll` in this example.
+  1. Pick **one** of the included generic DLLs to use. Possible options are `version.dll`, `winhttp.dll`, or `dbghelp.dll`. We'll choose `version.dll` in this example.
   2. Find your game's installation folder. For Hogwarts Legacy, this is the directory containing `HogwartsLegacy.exe`. An example path is `C:\Program Files (x86)\Steam\steamapps\common\Hogwarts Legacy\Phoenix\Binaries\Win64\`.
   3. Copy `dlssg_to_fsr3_amd_is_better.dll` and `version.dll` to your game's installation folder.
   4. Done. A log file named `dlssg_to_fsr3.log` will be created after you launch the game.
