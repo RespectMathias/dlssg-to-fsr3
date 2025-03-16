@@ -219,6 +219,7 @@ void ApplyAggressiveHookingWorkarounds()
 	// "SW Jedi Survivor\ SwGame\       Binaries\Win64\JediSurvivor.exe"
 	// "Atomic Heart\     AtomicHeart\  Binaries\Win64\AtomicHeart-Win64-Shipping.exe"
 	// "MMS\              MidnightSuns\ Binaries\Win64\MidnightSuns-Win64-Shipping.exe"
+	// "Avowed\           Alabama\      Binaries\Win64\Avowed-Win64-Shipping.exe"
 	// "The Great Circle\               TheGreatCircle.exe"
 	//
 	// "Dying Light 2\    ph\work\bin\x64\sl.interposer.dll"
@@ -227,12 +228,14 @@ void ApplyAggressiveHookingWorkarounds()
 	// "SW Jedi Survivor\ Engine\Plugins\Runtime\Nvidia\Streamline\Binaries\ThirdParty\Win64\sl.interposer.dll"
 	// "Atomic Heart\     Engine\Plugins\Runtime\Nvidia\Streamline\Binaries\ThirdParty\Win64\sl.interposer.dll"
 	// "MMS\              Engine\Plugins\Runtime\Nvidia\Streamline\Binaries\ThirdParty\Win64\sl.interposer.dll"
+	// "Avowed\           Engine\Plugins\Runtime\Nvidia\StreamlineCore\Binaries\ThirdParty\Win64\sl.interposer.dll"
 	// "The Great Circle\ streamline\sl.interposer.dll"
 	//
 	constinit static const wchar_t *bruteInterposerPaths[] = {
 		L"sl.interposer.dll",
 		L"..\\..\\..\\Engine\\Plugins\\Streamline\\Binaries\\ThirdParty\\Win64\\sl.interposer.dll",
 		L"..\\..\\..\\Engine\\Plugins\\Runtime\\Nvidia\\Streamline\\Binaries\\ThirdParty\\Win64\\sl.interposer.dll",
+		L"..\\..\\..\\Engine\\Plugins\\Runtime\\Nvidia\\StreamlineCore\\Binaries\\ThirdParty\\Win64\\sl.interposer.dll",
 		L"streamline\\sl.interposer.dll",
 	};
 
