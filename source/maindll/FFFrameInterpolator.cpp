@@ -22,14 +22,11 @@ FFFrameInterpolator::FFFrameInterpolator(uint32_t OutputWidth, uint32_t OutputHe
 	RefreshGlobalConfiguration();
 }
 
-FFFrameInterpolator::~FFFrameInterpolator()
-{
-}
+FFFrameInterpolator::~FFFrameInterpolator() {}
 
 FfxErrorCode FFFrameInterpolator::Dispatch(void *CommandList, NGXInstanceParameters *NGXParameters)
 {
-	if (NGXParameters->GetUIntOrDefault("DLSSG.MultiFrameCount", 0) > 1 ||
-		NGXParameters->GetUIntOrDefault("DLSSG.MultiFrameIndex", 0) > 1)
+	if (NGXParameters->GetUIntOrDefault("DLSSG.MultiFrameCount", 0) > 1 || NGXParameters->GetUIntOrDefault("DLSSG.MultiFrameIndex", 0) > 1)
 	{
 		const static bool once = []()
 		{
@@ -66,6 +63,9 @@ FfxErrorCode FFFrameInterpolator::Dispatch(void *CommandList, NGXInstanceParamet
 		if (!BuildFrameInterpolationParameters(&fsrFiDispatchDesc, NGXParameters))
 			return FFX_ERROR_INVALID_ARGUMENT;
 
+		// Allow backend to adjust params (e.g., convert formats) without bypassing HUD-less.
+		OnBeforeDispatchAdjustParams(fsrFiDispatchDesc);
+
 		fsrFiDispatchDesc.DebugView = g_EnableDebugOverlay;
 		fsrFiDispatchDesc.DebugTearLines = g_EnableDebugTearLines;
 
@@ -96,7 +96,7 @@ FfxErrorCode FFFrameInterpolator::Dispatch(void *CommandList, NGXInstanceParamet
 		}
 	}
 
- 	return dispatchStatus;
+	return dispatchStatus;
 }
 
 void FFFrameInterpolator::Create(NGXInstanceParameters *NGXParameters)
@@ -261,9 +261,7 @@ void FFFrameInterpolator::QueryHDRLuminanceRange(NGXInstanceParameters *NGXParam
 	spdlog::info("Using assumed HDR luminance range: {} to {} nits", m_HDRLuminanceRange.x, m_HDRLuminanceRange.y);
 }
 
-bool FFFrameInterpolator::BuildOpticalFlowParameters(
-	FfxOpticalflowDispatchDescription *OutParameters,
-	NGXInstanceParameters *NGXParameters)
+bool FFFrameInterpolator::BuildOpticalFlowParameters(FfxOpticalflowDispatchDescription *OutParameters, NGXInstanceParameters *NGXParameters)
 {
 	auto& desc = *OutParameters;
 	desc.commandList = GetActiveCommandList();
@@ -319,7 +317,11 @@ bool FFFrameInterpolator::BuildFrameInterpolationParameters(
 	if (!LoadTextureFromNGXParameters(NGXParameters, "DLSSG.MVecs", &desc.InputMotionVectors, FFX_RESOURCE_STATE_COPY_DEST))
 		return false;
 
-	if (LoadTextureFromNGXParameters(NGXParameters, "DLSSG.BidirectionalDistortionField", &desc.InputDistortionField, FFX_RESOURCE_STATE_COPY_DEST))
+	if (LoadTextureFromNGXParameters(
+			NGXParameters,
+			"DLSSG.BidirectionalDistortionField",
+			&desc.InputDistortionField,
+			FFX_RESOURCE_STATE_COPY_DEST))
 	{
 		const bool isLowRes = NGXParameters->GetUIntOrDefault("DLSSG.BidirectionalDistortionFieldLowPrecision.IsLowPrecision", 0) != 0;
 
@@ -340,7 +342,9 @@ bool FFFrameInterpolator::BuildFrameInterpolationParameters(
 	}
 
 	desc.InputOpticalFlowVector = m_SharedBackendInterface.fpGetResource(&m_SharedBackendInterface, *m_TexSharedOpticalFlowVector);
-	desc.InputOpticalFlowSceneChangeDetection = m_SharedBackendInterface.fpGetResource(&m_SharedBackendInterface, *m_TexSharedOpticalFlowSCD);
+	desc.InputOpticalFlowSceneChangeDetection = m_SharedBackendInterface.fpGetResource(
+		&m_SharedBackendInterface,
+		*m_TexSharedOpticalFlowSCD);
 
 	desc.OpticalFlowScale = { 1.0f / m_PostUpscaleRenderWidth, 1.0f / m_PostUpscaleRenderHeight };
 	desc.OpticalFlowBlockSize = 8;
@@ -350,9 +354,7 @@ bool FFFrameInterpolator::BuildFrameInterpolationParameters(
 		NGXParameters->GetUIntOrDefault("DLSSG.MVecsSubrectHeight", 0),
 	};
 
-	if (mvecExtents.width == 0 ||
-		mvecExtents.width > desc.InputMotionVectors.description.width ||
-		mvecExtents.height == 0 ||
+	if (mvecExtents.width == 0 || mvecExtents.width > desc.InputMotionVectors.description.width || mvecExtents.height == 0 ||
 		mvecExtents.height > desc.InputMotionVectors.description.height)
 	{
 		mvecExtents.width = desc.InputMotionVectors.description.width;
@@ -384,7 +386,7 @@ bool FFFrameInterpolator::BuildFrameInterpolationParameters(
 		if (isOrthographicProjection)
 			return false;
 
-		float(*cameraViewToClip)[4] = nullptr;
+		float (*cameraViewToClip)[4] = nullptr;
 		NGXParameters->GetVoidPointer("DLSSG.CameraViewToClip", reinterpret_cast<void **>(&cameraViewToClip));
 
 		if (!cameraViewToClip)

@@ -97,7 +97,6 @@ void RegisterConstantBufferAllocatorDX12(FfxInterface* backendInterface, FfxCons
 // Constant buffer allocation callback
 static FfxConstantBufferAllocator s_fpConstantAllocator = nullptr;
 
-#if 0 // Now defined in header
 typedef struct BackendContext_DX12 {
 
     // store for resources and resourceViews
@@ -190,7 +189,6 @@ typedef struct BackendContext_DX12 {
     std::mutex                  constantBufferMutex;
 
 } BackendContext_DX12;
-#endif
 
 static uint32_t getFreeBindlessDescriptorBlock(BackendContext_DX12 *context, uint32_t size, uint32_t effectId)
 {
@@ -555,6 +553,8 @@ D3D12_RESOURCE_STATES ffxGetDX12StateFromResourceState(FfxResourceStates state)
             return D3D12_RESOURCE_STATE_COMMON;
         case FFX_RESOURCE_STATE_RENDER_TARGET:
             return D3D12_RESOURCE_STATE_RENDER_TARGET;
+        case FFX_RESOURCE_STATE_DEPTH_ATTACHEMENT:
+            return D3D12_RESOURCE_STATE_DEPTH_WRITE;
         default:
             FFX_ASSERT_MESSAGE(false, "Resource state not yet supported");
             return D3D12_RESOURCE_STATE_COMMON;

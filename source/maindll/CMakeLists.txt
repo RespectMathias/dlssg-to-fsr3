@@ -85,6 +85,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	target_link_options(
 		${CURRENT_PROJECT}
 		PRIVATE
+			# Workaround for duplicate symbols between DX12/Vulkan FFX backends (e.g., s_debugPacingFrameIndex)
+			"/FORCE:MULTIPLE"
 			# Force generate release PDBs: https://learn.microsoft.com/en-us/cpp/build/reference/debug-generate-debug-info
 			"$<$<CONFIG:RELEASE>:/DEBUG:FULL;/OPT:REF;/OPT:ICF>"
 			# Anonymize RSDS PDB paths
@@ -111,8 +113,10 @@ target_compile_definitions(
 target_link_libraries(
 	${CURRENT_PROJECT}
 	PRIVATE
-		delayimp
-		dxgi
+	delayimp
+	dxgi
+	d3d12
+	d3dcompiler
 )
 
 target_link_options(

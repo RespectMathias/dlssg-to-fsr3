@@ -1,17 +1,103 @@
 #include <directx/d3dx12.h>
 #pragma warning(push)
 #pragma warning(disable : 4005)
-#define FfxFrameInterpolationSwapchainConfigureKey FfxFrameInterpolationSwapchainConfigureKeyDX12
-#define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK_DX12
+#define FfxFrameInterpolationSwapchainConfigureKey		 FfxFrameInterpolationSwapchainConfigureKeyDX12
+#define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK		 FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK_DX12
 #define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_FRAMEPACINGTUNING FFX_FI_SWAPCHAIN_CONFIGURE_KEY_FRAMEPACINGTUNING_DX12
 #include <FidelityFX/host/backends/dx12/ffx_dx12.h>
-#define FfxFrameInterpolationSwapchainConfigureKey FfxFrameInterpolationSwapchainConfigureKeyVK
-#define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK_VK
+#define FfxFrameInterpolationSwapchainConfigureKey		 FfxFrameInterpolationSwapchainConfigureKeyVK
+#define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK		 FFX_FI_SWAPCHAIN_CONFIGURE_KEY_WAITCALLBACK_VK
 #define FFX_FI_SWAPCHAIN_CONFIGURE_KEY_FRAMEPACINGTUNING FFX_FI_SWAPCHAIN_CONFIGURE_KEY_FRAMEPACINGTUNING_VK
 #include <FidelityFX/host/backends/vk/ffx_vk.h>
 #pragma warning(pop)
 #include "NGX/NvNGX.h"
 #include "FFInterfaceWrapper.h"
+
+// The FidelityFX SDK 1.1.4 hides BackendContext_DX12 inside ffx_dx12.cpp. Our custom resource
+// allocation path (to integrate NGX allocation callbacks) needs access to its layout. We mirror
+// the struct definition here verbatim so that references compile. This must stay token-identical
+// to the upstream definition to satisfy the ODR. If AMD exposes this publicly again, this block
+// can be removed.
+#ifndef DLSSG_TO_FSR3_BACKENDCONTEXT_DX12_MIRROR_GUARD
+#define DLSSG_TO_FSR3_BACKENDCONTEXT_DX12_MIRROR_GUARD
+typedef struct BackendContext_DX12
+{
+	// store for resources and resourceViews
+	typedef struct Resource
+	{
+#ifdef _DEBUG
+		wchar_t resourceName[64] = {};
+#endif
+		ID3D12Resource *resourcePtr;
+		FfxResourceDescription resourceDescription;
+		FfxResourceStates initialState;
+		FfxResourceStates currentState;
+		uint32_t srvDescIndex;
+		uint32_t uavDescIndex;
+		uint32_t uavDescCount;
+	} Resource;
+
+	uint32_t refCount;
+	uint32_t maxEffectContexts;
+
+	ID3D12Device *device = nullptr;
+
+	FfxGpuJobDescription *pGpuJobs;
+	uint32_t gpuJobCount;
+
+	uint32_t nextRtvDescriptor;
+	ID3D12DescriptorHeap *descHeapRtvCpu;
+
+	ID3D12DescriptorHeap *descHeapSrvCpu;
+	ID3D12DescriptorHeap *descHeapUavCpu;
+	ID3D12DescriptorHeap *descHeapUavGpu;
+
+	uint32_t descRingBufferSize;
+	uint32_t descRingBufferBase;
+	ID3D12DescriptorHeap *descRingBuffer;
+	uint32_t descBindlessBase;
+
+	uint8_t *pStagingRingBuffer;
+	uint32_t stagingRingBufferBase = 0;
+
+	D3D12_RESOURCE_BARRIER barriers[FFX_MAX_BARRIERS];
+	uint32_t barrierCount;
+
+	IDXGIFactory *dxgiFactory = nullptr;
+
+	typedef struct alignas(32) EffectContext
+	{
+		FfxEffect effectId;
+		uint32_t nextStaticResource;
+		uint32_t nextDynamicResource;
+		uint32_t nextStaticUavDescriptor;
+		uint32_t nextDynamicUavDescriptor;
+		uint32_t bindlessTextureSrvHeapStart;
+		uint32_t bindlessTextureSrvHeapSize;
+		uint32_t bindlessBufferSrvHeapStart;
+		uint32_t bindlessBufferSrvHeapSize;
+		uint32_t bindlessTextureUavHeapStart;
+		uint32_t bindlessTextureUavHeapSize;
+		uint32_t bindlessBufferUavHeapStart;
+		uint32_t bindlessBufferUavHeapSize;
+		uint32_t bindlessBufferHeapStart;
+		uint32_t bindlessBufferHeapEnd;
+		bool active;
+		FfxEffectMemoryUsage vramUsage;
+	} EffectContext;
+
+	Resource *pResources;
+	EffectContext *pEffectContexts;
+
+	FfxConstantAllocation FallbackConstantAllocator(void *data, FfxUInt64 dataSize);
+	void *constantBufferMem;
+	ID3D12Resource *constantBufferResource;
+	uint32_t constantBufferSize;
+	uint32_t constantBufferOffset;
+	std::mutex constantBufferMutex;
+
+} BackendContext_DX12;
+#endif // DLSSG_TO_FSR3_BACKENDCONTEXT_DX12_MIRROR_GUARD
 
 D3D12_RESOURCE_FLAGS ffxGetDX12ResourceFlags(FfxResourceUsage flags);
 D3D12_RESOURCE_STATES ffxGetDX12StateFromResourceState(FfxResourceStates state);
@@ -237,11 +323,9 @@ FfxErrorCode FFInterfaceWrapper::CustomCreateResourceDX12(
 #else
 		CD3DX12_HEAP_PROPERTIES temp(dx12UploadHeapProperties);
 
-		static_cast<FFInterfaceWrapper *>(backendInterface)->GetUserData()->m_NGXAllocCallback(
-			&dx12UploadBufferDescription,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			&temp,
-			&dx12Resource);
+		static_cast<FFInterfaceWrapper *>(backendInterface)
+			->GetUserData()
+			->m_NGXAllocCallback(&dx12UploadBufferDescription, D3D12_RESOURCE_STATE_GENERIC_READ, &temp, &dx12Resource);
 
 		if (!dx12Resource)
 			return FFX_ERROR_OUT_OF_MEMORY;
@@ -308,11 +392,9 @@ FfxErrorCode FFInterfaceWrapper::CustomCreateResourceDX12(
 #else
 		CD3DX12_HEAP_PROPERTIES temp(dx12HeapProperties);
 
-		static_cast<FFInterfaceWrapper *>(backendInterface)->GetUserData()->m_NGXAllocCallback(
-			&dx12ResourceDescription,
-			dx12ResourceStates,
-			&temp,
-			&dx12Resource);
+		static_cast<FFInterfaceWrapper *>(backendInterface)
+			->GetUserData()
+			->m_NGXAllocCallback(&dx12ResourceDescription, dx12ResourceStates, &temp, &dx12Resource);
 
 		if (!dx12Resource)
 			return FFX_ERROR_OUT_OF_MEMORY;

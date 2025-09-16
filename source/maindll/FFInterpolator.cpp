@@ -60,8 +60,29 @@ FfxErrorCode FFInterpolator::Dispatch(const FFInterpolatorDispatchParameters& Pa
 		dispatchDesc.frameTimeDelta = 1000.0f / 60.0f; // Unused
 		dispatchDesc.reset = Parameters.Reset;
 
-		dispatchDesc.backBufferTransferFunction = Parameters.HDR ? FFX_BACKBUFFER_TRANSFER_FUNCTION_PQ
-																 : FFX_BACKBUFFER_TRANSFER_FUNCTION_SRGB;
+		// Select transfer function according to source format when HDR is enabled.
+		// scRGB (FP16) -> SCRGB; 10-bit UNORM (PQ path) -> PQ; otherwise fall back to sRGB for SDR.
+		if (Parameters.HDR)
+		{
+			switch (dispatchDesc.currentBackBuffer.description.format)
+			{
+			case FFX_SURFACE_FORMAT_R16G16B16A16_FLOAT:
+				dispatchDesc.backBufferTransferFunction = FFX_BACKBUFFER_TRANSFER_FUNCTION_SCRGB;
+				break;
+			case FFX_SURFACE_FORMAT_R10G10B10A2_UNORM:
+				dispatchDesc.backBufferTransferFunction = FFX_BACKBUFFER_TRANSFER_FUNCTION_PQ;
+				break;
+			default:
+				// Unknown HDR format: prefer PQ which is commonly used for 10/12-bit HDR outputs
+				dispatchDesc.backBufferTransferFunction = FFX_BACKBUFFER_TRANSFER_FUNCTION_PQ;
+				break;
+			}
+		}
+		else
+		{
+			dispatchDesc.backBufferTransferFunction = FFX_BACKBUFFER_TRANSFER_FUNCTION_SRGB;
+		}
+
 		dispatchDesc.minMaxLuminance[0] = Parameters.MinMaxLuminance.x;
 		dispatchDesc.minMaxLuminance[1] = Parameters.MinMaxLuminance.y;
 
@@ -124,16 +145,33 @@ FfxErrorCode FFInterpolator::CreateContextDeferred(const FFInterpolatorDispatchP
 		desc.flags |= FFX_FRAMEINTERPOLATION_ENABLE_JITTER_MOTION_VECTORS;
 
 	if (Parameters.MotionVectorsDilated)
+	{
+#ifdef FFX_FRAMEINTERPOLATION_ENABLE_PREDILATED_MOTION_VECTORS
 		desc.flags |= FFX_FRAMEINTERPOLATION_ENABLE_PREDILATED_MOTION_VECTORS;
+#endif
+	}
 
 	desc.maxRenderSize = { m_MaxRenderWidth, m_MaxRenderHeight };
 	desc.displaySize = desc.maxRenderSize;
 
-	desc.backBufferFormat = Parameters.InputColorBuffer.description.format;
-	desc.previousInterpolationSourceFormat = desc.backBufferFormat;
-
+	// When HUD-less is provided, SDK requires previousInterpolationSourceFormat to equal its format.
+	// Additionally, backBufferFormat and previousInterpolationSourceFormat must be in the same
+	// precision group at context creation. Align both to the HUD-less format in that case.
 	if (Parameters.InputHUDLessColorBuffer.resource)
+	{
+		desc.backBufferFormat = Parameters.InputHUDLessColorBuffer.description.format;
 		desc.previousInterpolationSourceFormat = Parameters.InputHUDLessColorBuffer.description.format;
+	}
+	else
+	{
+		// No HUD-less: use the game's backbuffer format for both.
+		desc.backBufferFormat = Parameters.InputColorBuffer.description.format;
+		desc.previousInterpolationSourceFormat = desc.backBufferFormat;
+	}
+
+	// Note: The SDK also requires backBufferFormat and previousInterpolationSourceFormat to be in the same
+	// precision group at context creation. We do not bypass HUD-less; if a mismatch occurs, context creation
+	// will request a flush/recreate and return an error which will surface in logs to diagnose the source formats.
 
 	if (std::exchange(m_ContextFlushPending, false))
 		DestroyContext();

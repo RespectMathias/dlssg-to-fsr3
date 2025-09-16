@@ -74,4 +74,15 @@ private:
 	void DestroyBackend();
 	FfxErrorCode CreateOpticalFlowContext();
 	void DestroyOpticalFlowContext();
+
+protected:
+	// Allow platform backends (DX12/VK) to adjust dispatch params before FFX is called (e.g., format conversions).
+	virtual bool OnBeforeDispatchAdjustParams(FFInterpolatorDispatchParameters& /*params*/)
+	{
+		return false;
+	}
+	FfxFloatCoords2D GetHdrLuminanceRange() const
+	{
+		return m_HDRLuminanceRange;
+	}
 };

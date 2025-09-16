@@ -232,7 +232,6 @@ static uint32_t getPipelinePermutationFlags(uint32_t contextFlags, FfxPass, bool
     uint32_t flags = 0;
     flags |= (contextFlags & FFX_FRAMEINTERPOLATION_ENABLE_DISPLAY_RESOLUTION_MOTION_VECTORS) ? 0 : FRAMEINTERPOLATION_SHADER_PERMUTATION_LOW_RES_MOTION_VECTORS;
     flags |= (contextFlags & FFX_FRAMEINTERPOLATION_ENABLE_JITTER_MOTION_VECTORS) ? FRAMEINTERPOLATION_SHADER_PERMUTATION_JITTER_MOTION_VECTORS : 0;
-    flags |= (contextFlags & FFX_FRAMEINTERPOLATION_ENABLE_PREDILATED_MOTION_VECTORS) ? FRAMEINTERPOLATION_SHADER_PERMUTATION_PREDILATED_MOTION_VECTORS : 0;
     flags |= (contextFlags & FFX_FRAMEINTERPOLATION_ENABLE_DEPTH_INVERTED) ? FRAMEINTERPOLATION_SHADER_PERMUTATION_DEPTH_INVERTED : 0;
     flags |= (force64) ? FRAMEINTERPOLATION_SHADER_PERMUTATION_FORCE_WAVE64 : 0;
     flags |= (fp16) ? FRAMEINTERPOLATION_SHADER_PERMUTATION_ALLOW_FP16 : 0;
@@ -405,9 +404,7 @@ static FfxErrorCode frameinterpolationCreate(FfxFrameInterpolationContext_Privat
     // validate compatibility between backbuffer and hudless formats
     int backBufferGroup = GetFormatPrecisionGroup(contextDescription->backBufferFormat);
     int previousInterpolationSourceGroup = GetFormatPrecisionGroup(contextDescription->previousInterpolationSourceFormat);
-#if 0 // DLSSG-TO-FSR3: Error check has to be removed as it'll break too many games
     FFX_RETURN_ON_ERROR(backBufferGroup >= 0 && previousInterpolationSourceGroup >= 0 && backBufferGroup == previousInterpolationSourceGroup, FFX_ERROR_INVALID_ARGUMENT);
-#endif
 
     // Setup the data for implementation.
     memset(context, 0, sizeof(FfxFrameInterpolationContext_Private));
@@ -417,7 +414,7 @@ static FfxErrorCode frameinterpolationCreate(FfxFrameInterpolationContext_Privat
 
     // Check version info - make sure we are linked with the right backend version
     FfxVersionNumber version = context->contextDescription.backendInterface.fpGetSDKVersion(&context->contextDescription.backendInterface);
-    FFX_RETURN_ON_ERROR(version == FFX_SDK_MAKE_VERSION(1, 1, 2), FFX_ERROR_INVALID_VERSION);
+    FFX_RETURN_ON_ERROR(version == FFX_SDK_MAKE_VERSION(1, 1, 4), FFX_ERROR_INVALID_VERSION);
 
     // Create the context.
     FfxErrorCode errorCode = context->contextDescription.backendInterface.fpCreateBackendContext(&context->contextDescription.backendInterface, FFX_EFFECT_FRAMEINTERPOLATION, nullptr, &context->effectContextId);
@@ -453,7 +450,7 @@ static FfxErrorCode frameinterpolationCreate(FfxFrameInterpolationContext_Privat
         lanczos2Weights[currentLanczosWidthIndex] = int16_t(roundf(y * 32767.0f));
     }
 
-    uint8_t defaultDistortionFieldData[4] = { 0, 0, 0, 0 };
+    uint8_t defaultDistortionFieldData[2] = { 0, 0 };
     uint32_t atomicInitData[2] = { 0, 0 };
     float defaultExposure[] = { 0.0f, 0.0f };
     const FfxResourceType texture1dResourceType = (context->contextDescription.flags & FFX_FRAMEINTERPOLATION_ENABLE_TEXTURE1D_USAGE) ? FFX_RESOURCE_TYPE_TEXTURE1D : FFX_RESOURCE_TYPE_TEXTURE2D;
@@ -482,7 +479,7 @@ static FfxErrorCode frameinterpolationCreate(FfxFrameInterpolationContext_Privat
         {FFX_FRAMEINTERPOLATION_RESOURCE_IDENTIFIER_DISOCCLUSION_MASK,                      L"FI_DisocclusionMask",                     FFX_RESOURCE_TYPE_TEXTURE2D, FFX_RESOURCE_USAGE_UAV, 
             FFX_SURFACE_FORMAT_R8G8_UNORM, contextDescription->maxRenderSize.width, contextDescription->maxRenderSize.height, 1,    FFX_RESOURCE_FLAGS_ALIASABLE, {FFX_RESOURCE_INIT_DATA_TYPE_UNINITIALIZED}},
         {FFX_FRAMEINTERPOLATION_RESOURCE_IDENTIFIER_DEFAULT_DISTORTION_FIELD, L"FI_DefaultDistortionField", FFX_RESOURCE_TYPE_TEXTURE2D, FFX_RESOURCE_USAGE_READ_ONLY,
-            FFX_SURFACE_FORMAT_R8G8B8A8_SNORM, 1, 1, 1, FFX_RESOURCE_FLAGS_NONE, FfxResourceInitData::FfxResourceInitBuffer(sizeof(defaultDistortionFieldData), defaultDistortionFieldData) },
+            FFX_SURFACE_FORMAT_R8G8_UNORM, 1, 1, 1, FFX_RESOURCE_FLAGS_NONE, FfxResourceInitData::FfxResourceInitBuffer(sizeof(defaultDistortionFieldData), defaultDistortionFieldData) },
 
     };
 
@@ -817,11 +814,29 @@ static const float debugBarColorSequence[] = {
 };
 const size_t debugBarColorSequenceLength = 7;
 
+static void fsr3FrameInterpolationDebugCheckPrepare(FfxFrameInterpolationContext_Private* context, const FfxFrameInterpolationPrepareDescription* params)
+{
+    
+    static const FfxFloat32x3 zeroVector3D = { 0.f,0.f,0.f };
+    if ((memcmp(params->cameraPosition, zeroVector3D, sizeof(FfxFloat32x3)) == 0) &&
+        (memcmp(params->cameraUp, zeroVector3D, sizeof(FfxFloat32x3)) == 0) &&
+        (memcmp(params->cameraRight, zeroVector3D, sizeof(FfxFloat32x3)) == 0) &&
+        (memcmp(params->cameraForward, zeroVector3D, sizeof(FfxFloat32x3)) == 0))
+    {
+        FFX_PRINT_MESSAGE(FFX_MESSAGE_TYPE_WARNING, L"ffxDispatchDescFrameGenerationPrepareCameraInfo needs to be passed as linked struct. This is a required input to FSR3.1.4 and onwards for best quality.");
+    }
+}
+
 FFX_API FfxErrorCode ffxFrameInterpolationPrepare(FfxFrameInterpolationContext* context,
     const FfxFrameInterpolationPrepareDescription* params)
 {
     FfxFrameInterpolationContext_Private* contextPrivate = (FfxFrameInterpolationContext_Private*)(context);
 
+    if ((contextPrivate->contextDescription.flags & FFX_FRAMEINTERPOLATION_ENABLE_DEBUG_CHECKING) == FFX_FRAMEINTERPOLATION_ENABLE_DEBUG_CHECKING)
+    {
+        fsr3FrameInterpolationDebugCheckPrepare(contextPrivate, params);
+    }
+    
     contextPrivate->constants.renderSize[0]         = params->renderSize.width;
     contextPrivate->constants.renderSize[1]         = params->renderSize.height;
     contextPrivate->constants.jitter[0]             = params->jitterOffset.x;
@@ -1241,4 +1256,10 @@ FFX_API FfxErrorCode ffxFrameInterpolationDispatch(FfxFrameInterpolationContext*
 FFX_API FfxVersionNumber ffxFrameInterpolationGetEffectVersion()
 {
     return FFX_SDK_MAKE_VERSION(FFX_FRAMEINTERPOLATION_VERSION_MAJOR, FFX_FRAMEINTERPOLATION_VERSION_MINOR, FFX_FRAMEINTERPOLATION_VERSION_PATCH);
+}
+
+FFX_API FfxErrorCode ffxFrameInterpolationSetGlobalDebugMessage(ffxMessageCallback fpMessage, uint32_t debugLevel)
+{
+    ffxSetPrintMessageCallback(fpMessage, debugLevel);
+    return FFX_OK;
 }
