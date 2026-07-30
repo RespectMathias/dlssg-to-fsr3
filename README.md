@@ -177,30 +177,21 @@ Supported configuration values may also be supplied through environment variable
 
 ```mermaid
 flowchart LR
-    subgraph Game["Game"]
-        A["DLSS-G enabled"]
-        B["DLSS-G frame-generation calls"]
-        H["Present generated frame"]
+    subgraph game["Game"]
+        A["Calls DLSS-G<br/>frame generation"]
+        F["Presents generated frame"]
     end
 
-    subgraph Reforged["DLSSG_to_FSR Reforged"]
-        C["dlssg_to_fsr.dll"]
-        D["Translate resources,<br/>parameters and timing"]
+    subgraph reforged["DLSSG_to_FSR Reforged"]
+        B["dlssg_to_fsr.dll<br/>intercepts calls"]
+        C["Translates resources<br/>and parameters"]
     end
 
-    subgraph FidelityFX["AMD FidelityFX"]
-        E["amd_fidelityfx_dx12.dll"]
-        F["FSR Frame Generation"]
-        G["Generated frame"]
+    subgraph ffx["AMD FidelityFX"]
+        D["amd_fidelityfx_dx12.dll<br/>generates new frame"]
     end
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
+    A --> B --> C --> D --> F
 ```
 
 1. The game calls NVIDIA DLSS-G frame-generation APIs.
