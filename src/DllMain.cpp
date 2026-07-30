@@ -47,14 +47,14 @@ BOOL WINAPI DllMain(HINSTANCE hInstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 		spdlog::warn("");
 		spdlog::warn(
-			"dlssg-to-fsr3 v{}.{} loaded. AMD FSR 3.1 Frame Generation will replace Nvidia DLSS-G Frame Generation. Note this does NOT "
+			"dlssg_to_fsr v{}.{} loaded. AMD FSR 3.1 Frame Generation will replace Nvidia DLSS-G Frame Generation. Note this does NOT "
 			"represent a native",
 			BUILD_VERSION_MAJOR,
 			BUILD_VERSION_MINOR);
 		spdlog::warn("implementation of AMD FSR 3.1.");
 		spdlog::warn("");
-		spdlog::warn("dlssg-to-fsr3 is freely downloadable from https://www.nexusmods.com/site/mods/738 or "
-					 "https://github.com/Nukem9/dlssg-to-fsr3/releases.");
+		spdlog::warn("dlssg_to_fsr is freely downloadable from "
+					 "https://github.com/RespectMathias/dlssg_to_fsr/releases.");
 		spdlog::warn("If you paid for these files, you've been scammed.");
 		spdlog::warn("");
 		spdlog::warn("DO NOT USE IN MULTIPLAYER GAMES.");

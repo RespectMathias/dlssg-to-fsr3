@@ -31,16 +31,16 @@ function(configure_test_target TARGET)
     if(MSVC)
         target_compile_options(${TARGET} PRIVATE /EHsc /W4)
     endif()
-    add_dependencies(${TARGET} dlssg_to_fsr3)
+    add_dependencies(${TARGET} dlssg_to_fsr)
 endfunction()
 
 function(discover_dlssg_tests TARGET LABEL)
     gtest_discover_tests(
         ${TARGET}
-        WORKING_DIRECTORY "$<TARGET_FILE_DIR:dlssg_to_fsr3>"
+        WORKING_DIRECTORY "$<TARGET_FILE_DIR:dlssg_to_fsr>"
         PROPERTIES
-            REQUIRED_FILES "$<TARGET_FILE:dlssg_to_fsr3>"
-            ENVIRONMENT "DLSSG_TO_FSR3_DLL=$<TARGET_FILE:dlssg_to_fsr3>"
+            REQUIRED_FILES "$<TARGET_FILE:dlssg_to_fsr>"
+            ENVIRONMENT "DLSSG_TO_FSR_DLL=$<TARGET_FILE:dlssg_to_fsr>"
             LABELS "${LABEL}"
             TIMEOUT 120
     )
@@ -50,8 +50,8 @@ add_executable(AbiTests NGX/AbiTests.cpp)
 target_compile_definitions(
     AbiTests
     PRIVATE
-        "DLSSG_TEST_DLL_PATH=L\"$<TARGET_FILE:dlssg_to_fsr3>\""
-        "DLSSG_TEST_OPTISCALER_DLL_PATH=L\"$<TARGET_FILE_DIR:dlssg_to_fsr3>/dlssg_to_fsr3_amd_is_better.dll\""
+        "DLSSG_TEST_DLL_PATH=L\"$<TARGET_FILE:dlssg_to_fsr>\""
+        "DLSSG_TEST_OPTISCALER_DLL_PATH=L\"$<TARGET_FILE_DIR:dlssg_to_fsr>/dlssg_to_fsr3_amd_is_better.dll\""
 )
 target_link_libraries(AbiTests PRIVATE GTest::gtest_main)
 configure_test_target(AbiTests)
@@ -59,8 +59,8 @@ add_custom_command(
     TARGET AbiTests
     POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-        "$<TARGET_FILE:dlssg_to_fsr3>"
-        "$<TARGET_FILE_DIR:dlssg_to_fsr3>/dlssg_to_fsr3_amd_is_better.dll"
+        "$<TARGET_FILE:dlssg_to_fsr>"
+        "$<TARGET_FILE_DIR:dlssg_to_fsr>/dlssg_to_fsr3_amd_is_better.dll"
 )
 discover_dlssg_tests(AbiTests CPU)
 
@@ -143,7 +143,7 @@ set_tests_properties(
     Testbed.Dx12ToggleHeadless
     PROPERTIES
         LABELS GPU
-        ENVIRONMENT "DLSSG_TO_FSR3_DLL=$<TARGET_FILE:dlssg_to_fsr3>"
+        ENVIRONMENT "DLSSG_TO_FSR_DLL=$<TARGET_FILE:dlssg_to_fsr>"
         TIMEOUT 120
 )
 
@@ -158,6 +158,6 @@ set_tests_properties(
     Testbed.VulkanToggleHeadless
     PROPERTIES
         LABELS GPU
-        ENVIRONMENT "DLSSG_TO_FSR3_DLL=$<TARGET_FILE:dlssg_to_fsr3>;VK_LOADER_LAYERS_DISABLE=~implicit~"
+        ENVIRONMENT "DLSSG_TO_FSR_DLL=$<TARGET_FILE:dlssg_to_fsr>;VK_LOADER_LAYERS_DISABLE=~implicit~"
         TIMEOUT 120
 )

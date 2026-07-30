@@ -59,7 +59,7 @@ goto usage_error
 
 :args_done
 for %%I in ("!TARGET!") do set "TARGET=%%~fI"
-set "MANIFEST=!TARGET!\.dlssg_to_fsr3_install"
+set "MANIFEST=!TARGET!\.dlssg_to_fsr_install"
 set "MANIFEST_TMP=!MANIFEST!.tmp"
 
 if /i "!SCRIPT_NAME!"=="windows_uninstall.bat" set "UNINSTALL=1"
@@ -113,12 +113,12 @@ if /i "!MODE!"=="dbghelp" (
 
 if /i "!MODE!"=="asi" (
     set "MODE=asi"
-    set "INSTALL_NAME=dlssg_to_fsr3.asi"
+    set "INSTALL_NAME=dlssg_to_fsr.asi"
 )
 
 if /i "!MODE!"=="red4ext" (
     set "MODE=red4ext"
-    set "INSTALL_NAME=dlssg_to_fsr3.dll"
+    set "INSTALL_NAME=dlssg_to_fsr.dll"
 )
 
 if /i "!MODE!"=="nvngx" (
@@ -143,8 +143,8 @@ if exist "!MANIFEST!" (
     exit /b 1
 )
 
-if not exist "!SCRIPT_DIR!dlssg_to_fsr3.dll" (
-    echo Package file missing: !SCRIPT_DIR!dlssg_to_fsr3.dll>&2
+if not exist "!SCRIPT_DIR!dlssg_to_fsr.dll" (
+    echo Package file missing: !SCRIPT_DIR!dlssg_to_fsr.dll>&2
     exit /b 1
 )
 
@@ -155,7 +155,7 @@ if not exist "!SCRIPT_DIR!amd_fidelityfx_dx12.dll" (
 
 >"!MANIFEST_TMP!" echo mode^|!MODE!^|^|
 
-call :install_moved_file "!SCRIPT_DIR!dlssg_to_fsr3.dll" "!TARGET!\!INSTALL_NAME!" || goto install_failed
+call :install_moved_file "!SCRIPT_DIR!dlssg_to_fsr.dll" "!TARGET!\!INSTALL_NAME!" || goto install_failed
 call :install_file "!SCRIPT_DIR!amd_fidelityfx_dx12.dll" "!TARGET!\amd_fidelityfx_dx12.dll" || goto install_failed
 
 if /i "!MODE!"=="nvngx" (
@@ -189,7 +189,7 @@ if "!FORCE!"=="0" (
     if /i not "!ANSWER!"=="y" if /i not "!ANSWER!"=="yes" exit /b 1
 )
 
-set "BACKUP=!DESTINATION!.dlssg_to_fsr3.bak"
+set "BACKUP=!DESTINATION!.dlssg_to_fsr.bak"
 
 if exist "!BACKUP!" (
     echo Backup already exists: !BACKUP!>&2
@@ -231,7 +231,7 @@ if "!FORCE!"=="0" (
     if /i not "!ANSWER!"=="y" if /i not "!ANSWER!"=="yes" exit /b 1
 )
 
-set "BACKUP=!DESTINATION!.dlssg_to_fsr3.bak"
+set "BACKUP=!DESTINATION!.dlssg_to_fsr.bak"
 
 if exist "!BACKUP!" (
     echo Backup already exists: !BACKUP!>&2
@@ -344,7 +344,7 @@ if defined FILE_DESTINATION (
 
 del /q "!MANIFEST!" >nul
 
-echo dlssg-to-fsr3 removed from !TARGET!
+echo dlssg_to_fsr removed from !TARGET!
 
 if /i not "!TARGET!"=="!SCRIPT_ROOT!" goto uninstall_complete
 if /i not "!SCRIPT_NAME!"=="windows_uninstall.bat" goto uninstall_complete

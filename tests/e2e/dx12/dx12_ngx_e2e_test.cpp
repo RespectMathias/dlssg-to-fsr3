@@ -23,7 +23,7 @@ namespace dx12_ngx_e2e
 			{
 				const BackendConfig config = BackendConfig::FromEnvironment();
 				if (config.dll.empty())
-					GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+					GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 				try
 				{
 					backend_ = Dx12NgxBackend::Create(config);
@@ -91,7 +91,7 @@ namespace dx12_ngx_e2e
 		{
 			BackendConfig config = BackendConfig::FromEnvironment();
 			if (config.dll.empty())
-				GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+				GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 			config.width = test_support::scene_width;
 			config.height = test_support::scene_height;
 			auto backend = Dx12NgxBackend::Create(config);
@@ -127,7 +127,7 @@ namespace dx12_ngx_e2e
 		{
 			BackendConfig config = BackendConfig::FromEnvironment();
 			if (config.dll.empty())
-				GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+				GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 			auto backend = Dx12NgxBackend::Create(config);
 			bool previousEnabled = false;
 			for (std::uint32_t frameIndex = 0; frameIndex < 24; ++frameIndex)
@@ -146,7 +146,7 @@ namespace dx12_ngx_e2e
 		{
 			BackendConfig config = BackendConfig::FromEnvironment();
 			if (config.dll.empty())
-				GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+				GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 			config.provideRejectingResourceCallbacks = true;
 			auto backend = Dx12NgxBackend::Create(config);
 			static_cast<void>(backend->WarmupInterpolation());
@@ -158,7 +158,7 @@ namespace dx12_ngx_e2e
 		{
 			BackendConfig config = BackendConfig::FromEnvironment();
 			if (config.dll.empty())
-				GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+				GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 			config.motionVectorsDilated = true;
 			auto backend = Dx12NgxBackend::Create(config);
 			static_cast<void>(backend->WarmupInterpolation());
@@ -170,7 +170,7 @@ namespace dx12_ngx_e2e
 		{
 			BackendConfig config = BackendConfig::FromEnvironment();
 			if (config.dll.empty())
-				GTEST_SKIP() << "Set DLSSG_TO_FSR3_DLL to DLL path";
+				GTEST_SKIP() << "Set DLSSG_TO_FSR_DLL to DLL path";
 			config.provideIncompatibleHudless = true;
 			auto backend = Dx12NgxBackend::Create(config);
 			static_cast<void>(backend->WarmupInterpolation());

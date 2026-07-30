@@ -283,10 +283,10 @@ void InitializeProxy(HINSTANCE hInstDLL)
 		{
 			MessageBoxW(
 				nullptr,
-				L"Monster Hunter Wilds does not support third-party modifications and will crash with dlssg-to-fsr3 loaded.\n\n\nTo "
+				L"Monster Hunter Wilds does not support third-party modifications and will crash with dlssg_to_fsr loaded.\n\n\nTo "
 				L"work around these crashes, first install the latest version of REFramework or install Special-K and use its ASI "
-				L"plugin system instead.\n\n\ndlssg-to-fsr3 does not support multiplayer games. Continue at your own risk.",
-				L"dlssg-to-fsr3",
+				L"plugin system instead.\n\n\ndlssg_to_fsr does not support multiplayer games. Continue at your own risk.",
+				L"dlssg_to_fsr",
 				MB_ICONWARNING);
 		}
 	}

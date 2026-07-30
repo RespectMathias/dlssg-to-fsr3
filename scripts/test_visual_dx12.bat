@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 set "ROOT=%~dp0.."
 set "TESTBED=%ROOT%\bin\test\tests\Debug\FrameGenerationTestbed.exe"
-set "DLSSG_TO_FSR3_DLL=%ROOT%\bin\test\src\Debug\dlssg_to_fsr3.dll"
+set "DLSSG_TO_FSR_DLL=%ROOT%\bin\test\src\Debug\dlssg_to_fsr.dll"
 
 if not exist "%TESTBED%" (
     echo ERROR: Testbed not found: %TESTBED%
@@ -12,8 +12,8 @@ if not exist "%TESTBED%" (
     exit /b 1
 )
 
-if not exist "%DLSSG_TO_FSR3_DLL%" (
-    echo ERROR: DLL not found: %DLSSG_TO_FSR3_DLL%
+if not exist "%DLSSG_TO_FSR_DLL%" (
+    echo ERROR: DLL not found: %DLSSG_TO_FSR_DLL%
     echo Build test configuration first: scripts\test.bat
     pause
     exit /b 1

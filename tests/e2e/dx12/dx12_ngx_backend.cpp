@@ -669,11 +669,11 @@ namespace dx12_ngx_e2e
 	BackendConfig BackendConfig::FromEnvironment()
 	{
 		BackendConfig result;
-		const DWORD required = GetEnvironmentVariableW(L"DLSSG_TO_FSR3_DLL", nullptr, 0);
+		const DWORD required = GetEnvironmentVariableW(L"DLSSG_TO_FSR_DLL", nullptr, 0);
 		if (required == 0)
 			return result;
 		std::wstring value(required, L'\0');
-		const DWORD written = GetEnvironmentVariableW(L"DLSSG_TO_FSR3_DLL", value.data(), required);
+		const DWORD written = GetEnvironmentVariableW(L"DLSSG_TO_FSR_DLL", value.data(), required);
 		if (written == 0 || written >= required)
 			throw std::runtime_error(std::format("GetEnvironmentVariableW failed with error {}", GetLastError()));
 		value.resize(written);
@@ -684,7 +684,7 @@ namespace dx12_ngx_e2e
 	std::unique_ptr<Dx12NgxBackend> Dx12NgxBackend::Create(const BackendConfig& config)
 	{
 		if (config.dll.empty())
-			throw std::invalid_argument("Set DLSSG_TO_FSR3_DLL or BackendConfig::dll");
+			throw std::invalid_argument("Set DLSSG_TO_FSR_DLL or BackendConfig::dll");
 		auto impl = std::make_unique<Impl>(config);
 		impl->Initialize();
 		return std::unique_ptr<Dx12NgxBackend>(new Dx12NgxBackend(std::move(impl)));

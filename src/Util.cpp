@@ -39,7 +39,7 @@ namespace Util
 	{
 		static bool once = []()
 		{
-			const auto fullPath = GetThisDllPath() + L"\\dlssg_to_fsr3.log";
+			const auto fullPath = GetThisDllPath() + L"\\dlssg_to_fsr.log";
 			char convertedPath[2048] = {};
 
 			if (wcstombs_s(nullptr, convertedPath, fullPath.c_str(), std::size(convertedPath)) == 0)
@@ -58,12 +58,12 @@ namespace Util
 	bool GetSetting(const wchar_t *Key, bool DefaultValue)
 	{
 		wchar_t envKey[256];
-		swprintf_s(envKey, L"DLSSGTOFSR3_%s", Key);
+		swprintf_s(envKey, L"DLSSGTOFSR_%s", Key);
 
 		if (wchar_t v[2]; GetEnvironmentVariableW(envKey, v, std::size(v)) == 1)
 			return v[0] == L'1';
 
-		const static auto iniPath = GetThisDllPath() + L"\\dlssg_to_fsr3.ini";
+		const static auto iniPath = GetThisDllPath() + L"\\dlssg_to_fsr.ini";
 		return GetPrivateProfileIntW(L"Debug", Key, DefaultValue, iniPath.c_str()) != 0;
 	}
 }

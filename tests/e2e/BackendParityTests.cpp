@@ -16,7 +16,7 @@ namespace
 	std::wstring DllPath()
 	{
 		wchar_t path[32768] = {};
-		const auto length = GetEnvironmentVariableW(L"DLSSG_TO_FSR3_DLL", path, static_cast<DWORD>(std::size(path)));
+		const auto length = GetEnvironmentVariableW(L"DLSSG_TO_FSR_DLL", path, static_cast<DWORD>(std::size(path)));
 		return length > 0 && length < std::size(path) ? std::wstring(path, length) : std::wstring {};
 	}
 
@@ -42,7 +42,7 @@ namespace
 	{
 		const auto dll = DllPath();
 		if (dll.empty())
-			GTEST_SKIP() << "DLSSG_TO_FSR3_DLL is unset";
+			GTEST_SKIP() << "DLSSG_TO_FSR_DLL is unset";
 		const auto scene = test_support::GenerateProceduralScene();
 
 		dx12_ngx_e2e::BackendConfig dxConfig;

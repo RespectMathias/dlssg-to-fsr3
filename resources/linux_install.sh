@@ -47,7 +47,7 @@ target="$(cd "$target" 2>/dev/null && pwd || {
     pwd
 })"
 
-manifest="$target/.dlssg_to_fsr3_install"
+manifest="$target/.dlssg_to_fsr_install"
 
 hash_file() {
     sha256sum "$1" | cut -d' ' -f1
@@ -114,7 +114,7 @@ uninstall_files() {
         mv "$script_path" "$script_dir/linux_install.sh"
     fi
 
-    echo "dlssg-to-fsr3 removed from $target"
+    echo "dlssg_to_fsr removed from $target"
     exit 0
 }
 
@@ -165,8 +165,8 @@ fi
 
 case "$mode" in
     version|winhttp|dbghelp) dll_name="$mode.dll" ;;
-    asi) dll_name="dlssg_to_fsr3.asi" ;;
-    red4ext) dll_name="dlssg_to_fsr3.dll" ;;
+    asi) dll_name="dlssg_to_fsr.asi" ;;
+    red4ext) dll_name="dlssg_to_fsr.dll" ;;
     nvngx) dll_name="nvngx.dll" ;;
     optiscaler) dll_name="dlssg_to_fsr3_amd_is_better.dll" ;;
 esac
@@ -195,7 +195,7 @@ install_moved_file() {
             [[ "$answer" =~ ^[Yy]([Ee][Ss])?$ ]] || exit 1
         fi
 
-        backup="$destination.dlssg_to_fsr3.bak"
+        backup="$destination.dlssg_to_fsr.bak"
 
         [[ ! -e "$backup" ]] || {
             echo "Backup already exists: $backup" >&2
@@ -232,7 +232,7 @@ install_file() {
             [[ "$answer" =~ ^[Yy]([Ee][Ss])?$ ]] || exit 1
         fi
 
-        backup="$destination.dlssg_to_fsr3.bak"
+        backup="$destination.dlssg_to_fsr.bak"
 
         [[ ! -e "$backup" ]] || {
             echo "Backup already exists: $backup" >&2
@@ -246,7 +246,7 @@ install_file() {
     echo "file|$destination|$(hash_file "$destination")|$backup" >> "$manifest.tmp"
 }
 
-install_moved_file "$script_dir/dlssg_to_fsr3.dll" "$target/$dll_name"
+install_moved_file "$script_dir/dlssg_to_fsr.dll" "$target/$dll_name"
 install_file "$script_dir/amd_fidelityfx_dx12.dll" "$target/amd_fidelityfx_dx12.dll"
 
 if [[ "$mode" == "nvngx" && $signature_override -eq 0 ]]; then

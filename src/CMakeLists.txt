@@ -1,7 +1,7 @@
 #
 # Set up the source files and output library
 #
-set(CURRENT_PROJECT dlssg_to_fsr3)
+set(CURRENT_PROJECT dlssg_to_fsr)
 
 set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(FIDELITYFX_API_DIR "${PROJECT_DEPENDENCIES_PATH}/FidelityFX-SDK/ffx-api")
@@ -70,7 +70,7 @@ target_include_directories(
 set_target_properties(
 	${CURRENT_PROJECT}
 	PROPERTIES
-		OUTPUT_NAME "dlssg_to_fsr3"
+		OUTPUT_NAME "dlssg_to_fsr"
 		MSVC_DEBUG_INFORMATION_FORMAT "ProgramDatabase"
 )
 

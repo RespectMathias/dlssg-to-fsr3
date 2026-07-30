@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.26)
 
 project(
-    dlssg-to-fsr3
-    VERSION 0.130
+    dlssg-to-fsr
+    VERSION 1.0
     LANGUAGES CXX
 )
 
@@ -38,14 +38,14 @@ endif()
 #
 set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}")
 
-install(TARGETS dlssg_to_fsr3 RUNTIME DESTINATION "/")
+install(TARGETS dlssg_to_fsr RUNTIME DESTINATION "/")
 install(FILES "${FIDELITYFX_API_DLL}" DESTINATION "/")
 install(
     FILES
         "${PROJECT_RESOURCES_PATH}/windows_install.bat"
         "${PROJECT_RESOURCES_PATH}/DisableNvidiaSignatureChecks.reg"
         "${PROJECT_RESOURCES_PATH}/RestoreNvidiaSignatureChecks.reg"
-        "${PROJECT_RESOURCES_PATH}/dlssg_to_fsr3.ini"
+        "${PROJECT_RESOURCES_PATH}/dlssg_to_fsr.ini"
         "${PROJECT_RESOURCES_PATH}/README_EXTRACT_FILES_TO_GAME_FOLDER.txt"
     DESTINATION "/"
 )

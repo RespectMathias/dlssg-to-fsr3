@@ -63,7 +63,7 @@ void *TryResolveNGXLibrary()
 	const auto moduleHandle = LoadLibraryW(filePath);
 
 	if (!moduleHandle)
-		MessageBoxW(nullptr, L"Failed to load NGXCore library.", L"dlssg-to-fsr3", MB_OK);
+		MessageBoxW(nullptr, L"Failed to load NGXCore library.", L"dlssg_to_fsr", MB_OK);
 
 	return moduleHandle;
 }

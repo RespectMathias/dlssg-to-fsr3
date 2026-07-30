@@ -699,14 +699,14 @@ namespace vulkan_ngx_e2e
 			{
 				std::array<wchar_t, 32768> environment = {};
 				const DWORD length = GetEnvironmentVariableW(
-					L"DLSSG_TO_FSR3_DLL",
+					L"DLSSG_TO_FSR_DLL",
 					environment.data(),
 					static_cast<DWORD>(environment.size()));
-				path = length != 0 && length < environment.size() ? environment.data() : L"dlssg_to_fsr3.dll";
+				path = length != 0 && length < environment.size() ? environment.data() : L"dlssg_to_fsr.dll";
 			}
 			module = LoadLibraryW(path.c_str());
 			if (!module)
-				return Fail("DLL not found; set DLSSG_TO_FSR3_DLL");
+				return Fail("DLL not found; set DLSSG_TO_FSR_DLL");
 
 			if (!LoadExport(init, "NVSDK_NGX_VULKAN_Init") ||
 				!LoadExport(populate, "NVSDK_NGX_VULKAN_PopulateParameters_Impl") ||
