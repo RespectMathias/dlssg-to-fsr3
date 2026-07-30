@@ -8,7 +8,7 @@ on:
 
 env:
   VCPKG_DEFAULT_TRIPLET: x64-windows-static
-  VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+  VCPKG_BINARY_SOURCES: "clear"
 
 jobs:
   build-and-test:
@@ -26,7 +26,7 @@ jobs:
           arch: x64
 
       - name: Install Ninja
-        run: choco install ninja -y
+        uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
