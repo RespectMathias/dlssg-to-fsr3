@@ -1,0 +1,19 @@
+#pragma once
+
+#include <Windows.h>
+#include <spdlog/spdlog.h>
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <filesystem>
+#include <fstream>
+#include <memory>
+#include <mutex>
+#include <span>
+#include <string>
+#include <string_view>
+#include <unordered_map>
+#include <unordered_set>
+#include <variant>
+#include <vector>
+#include <shared_mutex>

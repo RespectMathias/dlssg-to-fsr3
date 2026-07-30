@@ -2,13 +2,16 @@ cmake_minimum_required(VERSION 3.26)
 
 project(
     dlssg-to-fsr3
-    VERSION 0.140
+    VERSION 0.130
     LANGUAGES CXX
 )
 
-set(PROJECT_DEPENDENCIES_PATH "${CMAKE_CURRENT_LIST_DIR}/dependencies")
+option(BUILD_TESTING "Build verification targets" OFF)
+
+set(PROJECT_DEPENDENCIES_PATH "${CMAKE_CURRENT_LIST_DIR}/external")
 set(PROJECT_RESOURCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
-set(PROJECT_SOURCE_PATH "${CMAKE_CURRENT_LIST_DIR}/source")
+set(PROJECT_SRC_PATH "${CMAKE_CURRENT_LIST_DIR}/src")
+set(FIDELITYFX_API_DLL "${PROJECT_DEPENDENCIES_PATH}/FidelityFX-SDK/PrebuiltSignedDLL/amd_fidelityfx_dx12.dll")
 
 #
 # Store the current git commit hash for later use
@@ -21,68 +24,38 @@ execute_process(
 )
 
 #
-# Always build the main library
+# Always build the library
 #
-add_subdirectory("${PROJECT_SOURCE_PATH}/maindll")
+add_subdirectory("${PROJECT_SRC_PATH}")
+
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 #
-# Then set up proxies/wrappers and install everything
+# Then install everything
 #
 set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}")
 
-function(install_universal_variant PROXYDLL IMPLDLL ROOTDIR READMEDIR DLLNAME)
-
-    if (NOT DLLNAME STREQUAL "")
-        install(FILES "$<TARGET_FILE:${PROXYDLL}>" DESTINATION "${ROOTDIR}/" RENAME "${DLLNAME}")
-    else()
-        install(TARGETS ${PROXYDLL} RUNTIME DESTINATION "${ROOTDIR}/")
-    endif()
-    install(TARGETS ${IMPLDLL} RUNTIME DESTINATION "${ROOTDIR}/")
-    install(FILES "${PROJECT_RESOURCES_PATH}/${READMEDIR}" DESTINATION "${ROOTDIR}/" RENAME "READ ME.txt")
-
-endfunction()
-
-if(BUILD_OUTPUT_WRAPPER STREQUAL "UNIVERSAL")
-
-    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_FILE_NAME} (Universal)")
-
-    add_subdirectory("${PROJECT_SOURCE_PATH}/wrapper_generic")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "plugin_red4ext" "read_me_generic_plugin.txt" "dlssg_to_fsr3.dll")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "plugin_asi_loader" "read_me_generic_plugin.txt" "dlssg_to_fsr3.asi")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_version" "read_me_generic_dll.txt" "version.dll")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_winhttp" "read_me_generic_dll.txt" "winhttp.dll")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "dll_dbghelp" "read_me_generic_dll.txt" "dbghelp.dll")
-
-elseif(BUILD_OUTPUT_WRAPPER STREQUAL "DLSSTWEAKS")
-
-    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_FILE_NAME} (DLSSTweaks Edition)")
-
-    add_subdirectory("${PROJECT_SOURCE_PATH}/wrapper_dt")
-    install_universal_variant(dlsstweaks_wrapper_output_dll dlssg_output_dll "" "read_me_dlsstweaks.txt" "")
-
-elseif(BUILD_OUTPUT_WRAPPER STREQUAL "NVNGX")
-
-    add_subdirectory("${PROJECT_SOURCE_PATH}/wrapper_generic")
-    install_universal_variant(generic_wrapper_output_dll dlssg_output_dll "" "read_me_nvngx.txt" "")
-
-    install(
-        FILES
-            "${PROJECT_RESOURCES_PATH}/DisableNvidiaSignatureChecks.reg"
-            "${PROJECT_RESOURCES_PATH}/RestoreNvidiaSignatureChecks.reg"
-        DESTINATION
-            "/"
-    )
-
-endif()
-
+install(TARGETS dlssg_to_fsr3 RUNTIME DESTINATION "/")
+install(FILES "${FIDELITYFX_API_DLL}" DESTINATION "/")
 install(
     FILES
-        "${PROJECT_RESOURCES_PATH}/binary_dist_license.txt"
-    DESTINATION
-        "/"
-    RENAME
-        "LICENSE.txt"
+        "${PROJECT_RESOURCES_PATH}/windows_install.bat"
+        "${PROJECT_RESOURCES_PATH}/DisableNvidiaSignatureChecks.reg"
+        "${PROJECT_RESOURCES_PATH}/RestoreNvidiaSignatureChecks.reg"
+        "${PROJECT_RESOURCES_PATH}/dlssg_to_fsr3.ini"
+        "${PROJECT_RESOURCES_PATH}/README_EXTRACT_FILES_TO_GAME_FOLDER.txt"
+    DESTINATION "/"
 )
+install(
+    FILES "${PROJECT_RESOURCES_PATH}/linux_install.sh"
+    DESTINATION "/"
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+)
+
+install(DIRECTORY "${PROJECT_RESOURCES_PATH}/licenses" DESTINATION "/")
 
 set(CPACK_GENERATOR "ZIP")
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)

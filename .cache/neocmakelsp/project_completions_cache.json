@@ -1,0 +1,337 @@
+{
+  "date": "2026-07-31T00:48:25.255239800+02:00",
+  "data": {
+    "C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\tests\\CMakeLists.txt": [
+      {
+        "label": "configure_test_target",
+        "kind": 3,
+        "detail": "Function",
+        "documentation": "defined function\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\tests\\CMakeLists.txt"
+      },
+      {
+        "label": "discover_dlssg_tests",
+        "kind": 3,
+        "detail": "Function",
+        "documentation": "defined function\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\tests\\CMakeLists.txt"
+      },
+      {
+        "label": "GTest_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: GTest"
+      },
+      {
+        "label": "GTest_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: GTest"
+      },
+      {
+        "label": "Vulkan_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      },
+      {
+        "label": "Vulkan_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      },
+      {
+        "label": "glfw3_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: glfw3"
+      },
+      {
+        "label": "glfw3_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: glfw3"
+      },
+      {
+        "label": "imgui_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: imgui"
+      },
+      {
+        "label": "imgui_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: imgui"
+      }
+    ],
+    "C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt": [
+      {
+        "label": "FFX_PLATFORM_NAME",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_PLATFORM_NAME",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_CXX_STANDARD",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_CXX_STANDARD_REQUIRED",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_CXX_FLAGS",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_CONFIGURATION_TYPES",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_DEBUG_POSTFIX",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_RELWITHDEBINFO_POSTFIX",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_RUNTIME_OUTPUT_DIRECTORY",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_ARCHIVE_OUTPUT_DIRECTORY",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_FSR2",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_FSR3",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_FSR3UPSCALER",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_OF",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_FI",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_AUTO_COMPILE_SHADERS",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "FFX_BUILD_AS_DLL",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\external\\FidelityFX-SDK\\ffx-api\\CMakeLists.txt"
+      },
+      {
+        "label": "Vulkan_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      },
+      {
+        "label": "Vulkan_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      }
+    ],
+    "C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt": [
+      {
+        "label": "CURRENT_PROJECT",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt\n\n"
+      },
+      {
+        "label": "SOURCE_DIR",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt"
+      },
+      {
+        "label": "FIDELITYFX_API_DIR",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt"
+      },
+      {
+        "label": "FIDELITYFX_API_DLL",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt"
+      },
+      {
+        "label": "VULKAN_COPY_SHADER_HEADER",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\src\\CMakeLists.txt"
+      },
+      {
+        "label": "spdlog_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: spdlog"
+      },
+      {
+        "label": "spdlog_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: spdlog"
+      },
+      {
+        "label": "detours_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: detours"
+      },
+      {
+        "label": "detours_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: detours"
+      },
+      {
+        "label": "Vulkan_LIBRARIES",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      },
+      {
+        "label": "Vulkan_INCLUDE_DIRS",
+        "kind": 6,
+        "detail": "Variable",
+        "documentation": "package: Vulkan"
+      }
+    ],
+    "C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt": [
+      {
+        "label": "BUILD_TESTING",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "PROJECT_DEPENDENCIES_PATH",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "PROJECT_RESOURCES_PATH",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "PROJECT_SRC_PATH",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "FIDELITYFX_API_DLL",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "CPACK_PACKAGE_FILE_NAME",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt\n\n"
+      },
+      {
+        "label": "CPACK_GENERATOR",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      },
+      {
+        "label": "CPACK_INCLUDE_TOPLEVEL_DIRECTORY",
+        "kind": 12,
+        "detail": "Value",
+        "documentation": "defined variable\nfrom: C:\\Users\\User\\source\\repos\\dlssg_to_fsr\\CMakeLists.txt"
+      }
+    ]
+  }
+}

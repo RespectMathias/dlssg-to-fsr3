@@ -1,200 +1,351 @@
-**dlssg-to-fsr3** is a drop-in mod/replacement for games utilizing [Nvidia's DLSS-G Frame Generation](https://nvidianews.nvidia.com/news/nvidia-introduces-dlss-3-with-breakthrough-ai-powered-frame-generation-for-up-to-4x-performance) technology that allows people to use [AMD's FSR 3 Frame Generation](https://github.com/GPUOpen-LibrariesAndSDKs/FidelityFX-SDK) technology instead. Only RTX 1600, RTX 2000, and RTX 3000 series GPUs are supported.
+<div align="center">
 
-Game-specific compatibility can be [found here](https://github.com/Nukem9/dlssg-to-fsr3/wiki/Game-Compatibility-List). Using dlssg-to-fsr3 in multiplayer games is ill advised and may lead to account bans. **Use at your own risk.**
+<img src="resources/icon.svg" width="160" alt="DLSSG_to_FSR Reforged logo">
 
-## Download Link
+# DLSSG_to_FSR Reforged
 
-[https://www.nexusmods.com/site/mods/738](https://www.nexusmods.com/site/mods/738?tab=files)
+**Use AMD FidelityFX Frame Generation in games built for NVIDIA DLSS-G.**
 
-## Installation for Users
+<a href="https://github.com/RespectMathias/dlssg_to_fsr/releases/latest">
+  <img src="https://img.shields.io/badge/Download-Latest_release-2ea44f?style=for-the-badge&logo=github" alt="Download latest release">
+</a>
+<a href="https://github.com/Nukem9/dlssg-to-fsr3/wiki/Game-Compatibility-List">
+  <img src="https://img.shields.io/badge/Game-Compatibility-2563eb?style=for-the-badge&logo=bookstack&logoColor=white" alt="Game compatibility list">
+</a>
+<a href="https://github.com/RespectMathias/dlssg_to_fsr/issues">
+  <img src="https://img.shields.io/badge/Report-an_issue-d73a49?style=for-the-badge&logo=github" alt="Report an issue">
+</a>
+<img src="https://img.shields.io/badge/License-GPLv3-6e7781?style=for-the-badge" alt="GPLv3 license">
 
-<details>
-<summary>Universal Method <b>(Recommended)</b></summary><br/>
+<br><br>
 
-  1. Pick **one** of the included generic DLLs to use. Possible options are `version.dll`, `winhttp.dll`, or `dbghelp.dll`. We'll choose `version.dll` in this example.
-  2. Find your game's installation folder. For Hogwarts Legacy, this is the directory containing `HogwartsLegacy.exe`. An example path is `C:\Program Files (x86)\Steam\steamapps\common\Hogwarts Legacy\Phoenix\Binaries\Win64\`.
-  3. Copy `dlssg_to_fsr3_amd_is_better.dll` and `version.dll` to your game's installation folder.
-  4. Done. A log file named `dlssg_to_fsr3.log` will be created after you launch the game.
+[Download](https://github.com/RespectMathias/dlssg_to_fsr/releases/latest) ·
+[Compatibility](https://github.com/Nukem9/dlssg-to-fsr3/wiki/Game-Compatibility-List) ·
+[Issues](https://github.com/RespectMathias/dlssg_to_fsr/issues) ·
+[Original project](https://github.com/Nukem9/dlssg-to-fsr3)
 
-</details>
+</div>
 
-<details>
-<summary>NVNGX Method</summary><br/>
+## About
 
-  1. Double click on `DisableNvidiaSignatureChecks.reg` and select **Run**. Click **Yes** on the next few dialogs.
-  2. Find your game's installation folder. For Cyberpunk 2077, this is the directory containing `Cyberpunk2077.exe`. An example path is `C:\Program Files (x86)\Steam\steamapps\common\Cyberpunk 2077\bin\x64\`.
-  3. Copy `dlssg_to_fsr3_amd_is_better.dll` and the new `nvngx.dll` to your game's installation folder.
-  4. A log file named `dlssg_to_fsr3.log` will be created after you launch the game.
+**DLSSG_to_FSR Reforged** is a drop-in replacement for games using [NVIDIA DLSS-G Frame Generation](https://nvidianews.nvidia.com/news/nvidia-introduces-dlss-3-with-breakthrough-ai-powered-frame-generation-for-up-to-4x-performance).
 
-</details>
+It intercepts DLSS-G frame-generation calls and redirects them to [AMD FidelityFX Frame Generation](https://github.com/GPUOpen-LibrariesAndSDKs/FidelityFX-SDK), allowing supported games to use AMD frame generation on:
 
-<details>
-<summary>DLSSTweaks Method</summary><br/>
+- GeForce GTX 16 series
+- GeForce RTX 20 series
+- GeForce RTX 30 series
 
-  1. Please see the [included readme](/resources/read_me_dlsstweaks.txt).
+This project continues the work of [Nukem9/dlssg-to-fsr3](https://github.com/Nukem9/dlssg-to-fsr3) with newer FidelityFX support, expanded installation options, and continued compatibility work.
 
-</details>
+> [!NOTE]
+> This project replaces **DLSS Frame Generation**, not DLSS Super Resolution. Continue using the game's normal upscaling option unless its compatibility instructions say otherwise.
 
-## Installation for Developers
+## Important
 
-1. Open `CMakeUserEnvVars.json` with a text editor and rename `___GAME_ROOT_DIRECTORY` to `GAME_ROOT_DIRECTORY`.
-2. Change the path in `GAME_ROOT_DIRECTORY` to your game of choice. Built DLLs are automatically copied over.
-3. Change the path in `GAME_DEBUGGER_CMDLINE` to your executable of choice. This allows direct debugging from Visual Studio's interface.
-4. Manually copy `resources\dlssg_to_fsr3.ini` to the game directory for FSR 3 visualization and debug options.
+> [!CAUTION]
+> **Do not use this mod in online or multiplayer games.**
+>
+> Injected DLLs may trigger anti-cheat systems and could result in an account suspension or ban. Use this project at your own risk.
+
+Compatibility varies between games, game updates, graphics drivers, and other installed mods.
+
+Check the [game compatibility list](https://github.com/Nukem9/dlssg-to-fsr3/wiki/Game-Compatibility-List) before installing.
+
+## Quick start
+
+1. [Download the latest release](https://github.com/RespectMathias/dlssg_to_fsr/releases/latest).
+2. Extract the complete archive.
+3. Run the installer.
+4. Select the installation mode recommended for the game.
+5. Enable DLSS Frame Generation in the game settings.
+
+Do not run the installer from inside the release archive.
+
+## Download
+
+Download the latest archive from [GitHub Releases](https://github.com/RespectMathias/dlssg_to_fsr/releases/latest).
+
+The release contains one core DLL:
+
+```text
+dlssg_to_fsr.dll
+```
+
+The installer renames and deploys it according to the selected installation mode.
+
+## Installation
+
+### Windows
+
+1. Extract the release archive.
+2. Run `windows_install.bat`.
+3. Select the installation mode matching the game or mod loader.
+4. Select the game executable or plugin directory.
+5. Start the game.
+6. Enable DLSS Frame Generation in the game settings.
+
+The installer:
+
+- backs up conflicting files
+- records installed files in an install manifest
+- deploys the DLL under the required filename
+- renames itself to `windows_uninstall.bat`
+
+Run `windows_uninstall.bat` to remove the mod and restore previous files.
+
+### Linux and Proton
+
+1. Extract the release archive.
+2. Open a terminal in the extracted directory.
+3. Run:
+
+```bash
+bash linux_install.sh
+```
+
+4. Select the matching installation mode.
+5. Select the game directory.
+
+After installation, the script is renamed to:
+
+```text
+linux_uninstall.sh
+```
+
+Run it to remove the mod and restore backed-up files.
+
+## Installation modes
+
+| Mode         | Use                                                 |
+| ------------ | --------------------------------------------------- |
+| `version`    | Installs as `version.dll`                           |
+| `winhttp`    | Installs as `winhttp.dll`                           |
+| `dbghelp`    | Installs as `dbghelp.dll`                           |
+| `nvngx`      | Installs as an NVIDIA NGX replacement               |
+| `asi`        | Installs as an ASI plugin                           |
+| `red4ext`    | Installs through RED4ext                            |
+| `optiscaler` | Installs as an OptiScaler frame-generation provider |
+
+Use the mode recommended by the game's compatibility instructions.
+
+### OptiScaler mode
+
+OptiScaler mode installs the provider as:
+
+```text
+dlssg_to_fsr3_amd_is_better.dll
+```
+
+This legacy filename is intentionally retained because OptiScaler currently loads the provider under that exact name.
+
+The project, build target, configuration file, log file, and normal release DLL use the new `dlssg_to_fsr` name.
+
+## Headless installation
+
+### Windows
+
+```bat
+windows_install.bat -Mode optiscaler -TargetPath "C:\Games\Example" -Force
+```
+
+### Linux and Proton
+
+```bash
+bash linux_install.sh --mode=optiscaler --target="$PWD"
+```
+
+## Configuration
+
+Copy the default configuration file into the game directory:
+
+```text
+resources/dlssg_to_fsr.ini
+```
+
+The configuration file contains logging, visualization, and developer options.
+
+Logs are written to:
+
+```text
+dlssg_to_fsr.log
+```
+
+Supported configuration values may also be supplied through environment variables.
+
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph Game["Game"]
+        A["DLSS-G enabled"]
+        B["DLSS-G frame-generation calls"]
+        H["Present generated frame"]
+    end
+
+    subgraph Reforged["DLSSG_to_FSR Reforged"]
+        C["dlssg_to_fsr.dll"]
+        D["Translate resources,<br/>parameters and timing"]
+    end
+
+    subgraph FidelityFX["AMD FidelityFX"]
+        E["amd_fidelityfx_dx12.dll"]
+        F["FSR Frame Generation"]
+        G["Generated frame"]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+```
+
+1. The game calls NVIDIA DLSS-G frame-generation APIs.
+2. `dlssg_to_fsr.dll` intercepts those calls.
+3. Game resources and parameters are translated into the format expected by AMD FidelityFX Frame Generation.
+4. `amd_fidelityfx_dx12.dll` generates the additional frame.
+5. The generated frame is returned to the game for presentation.
+
+The game behaves as though it is using DLSS-G while AMD FidelityFX performs the frame generation.
+
+`amd_fidelityfx_dx12.dll` is loaded dynamically from the same directory as `dlssg_to_fsr.dll`.
+
+This means newer compatible versions of FSR can be used without rebuilding `dlssg_to_fsr.dll`.
+
+## Compatibility
+
+Compatibility depends on:
+
+| Area             | Examples                                       |
+| ---------------- | ---------------------------------------------- |
+| Game integration | DLSS-G and Streamline versions                 |
+| Graphics API     | DirectX 12 or Vulkan                           |
+| Resources        | Formats, dimensions, motion vectors, and depth |
+| Installation     | Proxy DLL or plugin loading method             |
+| Other software   | Overlays, injectors, and graphics mods         |
+| Protection       | Anti-cheat and integrity checks                |
+| System           | GPU driver and Windows or Proton version       |
+
+Start with the [upstream game compatibility list](https://github.com/Nukem9/dlssg-to-fsr3/wiki/Game-Compatibility-List).
+
+Reforged releases may behave differently as newer game integrations and FidelityFX versions are supported.
+
+## Reporting problems
+
+Before opening an issue:
+
+1. Check the compatibility list.
+2. Remove other graphics injectors when possible.
+3. Confirm the selected installation mode.
+4. Reproduce the issue with logging enabled.
+
+Include:
+
+- game name and version
+- game store
+- GPU model
+- graphics driver version
+- Windows or Proton version
+- selected installation mode
+- graphics API
+- other installed graphics mods
+- `dlssg_to_fsr.log`
+
+Do not report problems caused by repacked or unofficial builds.
 
 ## Building
 
 ### Requirements
 
-- This repository and all of its submodules cloned.
-- The [Vulkan SDK](https://vulkan.lunarg.com/) and `VULKAN_SDK` environment variable set.
-- **Visual Studio 2022** 17.9.6 or newer.
-- **CMake** 3.26 or newer.
-- **Vcpkg**.
+- Repository cloned with all submodules
+- Visual Studio 18 Build Tools with Desktop development with C++
+- CMake 3.26 or newer
+- vcpkg
 
-### FidelityFX SDK
+### Clone
 
-1. Open a `Visual Studio 2022 x64 Tools Command Prompt` instance.
-2. Navigate to the `dependencies\FidelityFX-SDK\` subdirectory.
-3. Run `Build-FFX-SDK.ps1` and wait for compilation.
-4. Done.
+```powershell
+git clone --recursive https://github.com/RespectMathias/dlssg_to_fsr.git
+cd dlssg_to_fsr
+```
 
-### dlssg-to-fsr3 (Option 1, Visual Studio UI)
+When the repository has already been cloned without submodules:
 
-1. Open `CMakeLists.txt` directly or open the root folder containing `CMakeLists.txt`.
-2. Select one of the preset configurations from the dropdown, e.g. `Universal Release x64`.
-3. Build and wait for compilation.
-4. Build files are written to the bin folder. Done.
+```powershell
+git submodule update --init --recursive
+```
 
-### dlssg-to-fsr3 (Option 2, Powershell Script)
+### Build with Visual Studio
 
-1. Open a Powershell command window.
-2. Run `.\Make-Release.ps1` and wait for compilation.
-3. Build files from each configuration are written to the bin folder and archived. Done.
+1. Open the repository root or `CMakeLists.txt` in Visual Studio.
+2. Select a CMake preset, such as `Universal Release x64`.
+3. Build the `dlssg_to_fsr` target.
+4. Find the compiled files in `bin`.
 
-## Changelog
+### Build release archives
 
-<details>
-  <summary>Click to expand.</summary><br/>
+Open Command Prompt in the repository root and run:
 
-**Version 0.140**
+```bat
+scripts\build.bat
+```
 
-- Updates build script to PowerShell so that PIX dependencies can be fetched automatically and opens a VS instance.
-- Adds FFX SDK 1.1.4 as a submodule.
-- Sets SDK to MT instead of MD using flags.
-- Adds BackendContext_DX12 in wrapper as AMD has hidden it.
-- Resolves backbuffer hudless bug where backbuffer was HDR10 and hudless FP16 (bug introduced post SDK update).
-- Note: Only DirectX games have been tested due to lack of Vulkan DLSS-G titles owned. Vulkan HDR mismatch behavior is unknown.
+The script builds the release configurations and writes the resulting archives to `bin`.
 
-**Version 0.130**
+## Testing
 
-- Added support for newer Streamline plugin interposer paths.
-- Added logging for Vulkan present metering availability.
+### Run verification
 
-**Version 0.123**
+```bat
+scripts\test.bat
+scripts\test.bat Release
+scripts\test.bat Debug NgxAbi
+scripts\test.bat Release --skip-gpu
+```
 
-- Added a warning prompt because Monster Hunter Wilds crashes without REFramework installed. Once again, multiplayer games aren't supported.
+Requires Visual Studio 18 Build Tools and the FidelityFX API DLL at `external\FidelityFX-SDK\PrebuiltSignedDLL\amd_fidelityfx_dx12.dll`. The script auto-detects VS and sets up the environment.
 
-**Version 0.122**
+### Visual testbed
 
-- Removed a workaround for Indiana Jones and the Great Circle as it is no longer necessary.
+```bat
+scripts\dx12_visual_test.bat
+scripts\vulkan_visual_test.bat
+```
 
-**Version 0.121**
+Alternates interpolated and real outputs. Press `F` to toggle frame generation. Requires test configuration build (`scripts\test.bat`).
 
-- Added additional error logging.
-- Added future proofing for RTX Remix-based games.
-- Fixed issues reading configuration settings when supplied through environment variables.
+### Vulkan layers
 
-**Version 0.120**
+Disable implicit layers before manual Vulkan or testbed execution:
 
-- Added support for intercepting/hooking over-the-air Streamline plugin updates with the Universal edition.
-- Added support for games that pass in bidirectional distortion field resources.
-- Added workarounds to support Indiana Jones and the Great Circle.
-- Added workarounds to better support RTX Remix-based games.
-- Added workarounds for games providing incorrect camera far, near, and field of view values.
-- Migrated to the latest AMD FidelityFX SDK (v1.1 -> v1.1.3).
-- Fixed occasional blurry rectangle (interpolation rect) issues when switching upscalers or changing output resolutions.
+```bat
+set VK_LOADER_LAYERS_DISABLE=~implicit~
+```
 
-**Version 0.110**
+### DX11
 
-- Added native Vulkan support for FSR 3.1.
+DX11 frame generation is intentionally unsupported. Exports remain for ABI compatibility but return `NVSDK_NGX_Result_FAIL_FeatureNotSupported` (`0xBAD00001`). DX12 and Vulkan are supported.
 
-**Version 0.100**
+## Releases
 
-- Tentative support for FSR 3.1 frame generation.
-- Added extremely experimental support for Vulkan. Expect artifacts and disocclusion issues.
-- Implemented even more aggressive hooking in the universal variants due to recent DLSS SDK changes.
-- Revised a number of debug log prints.
+Changes, fixes, and compatibility updates are documented on the [Releases page](https://github.com/RespectMathias/dlssg_to_fsr/releases).
 
-**Version 0.90**
+The historical changelog for the original project remains available in [Nukem9/dlssg-to-fsr3](https://github.com/Nukem9/dlssg-to-fsr3).
 
-- Added a Universal zip archive for maximum game support. Separate READ ME.txts are included within each folder. Registry key tweaks are not required.
-- Universal DLLs now automatically disable the EGS overlay due to hooking conflicts.
-- Universal DLLs now bypass GPU architecture checks for stubborn games (Dying Light 2, Returnal).
-- HDR luminance values are now queried from the active monitor, falling back to defaults when necessary.
-- Fixed GPU driver crashes in Dying Light 2 with universal DLLs.
-- Hardware accelerated GPU scheduling status is now logged.
+## Credits
 
-**Version 0.81**
-
-- Fixed GPU hangs in certain games with major scene transitions (e.g. The Witcher 3).
-- Miscellaneous smaller stability fixes and error checking.
-- Added the ability to rename nvngx.dll to version.dll, winhttp.dll, or dbghelp.dll to avoid the registry key signature override requirement.
-
-**Version 0.80**
-
-- Hopefully fixed all texture format conversion crashes (e.g. Hogwarts Legacy).
-- Improved error logging, again.
-
-**Version 0.70**
-
-- Error checking code rewritten.
-- Logging code rewritten.
-- Added better support for texture dimensions/formats changing at runtime.
-- Added a developer config option to show only interpolated frames.
-- Improved nvngx wrapper dll compatibility.
-
-**Version 0.60**
-
-- The nag prompt at startup has been removed.
-- Added a log file ("dlssg_to_fsr3.log") in the game directory.
-- Added support for developer options and debug overlay ("dlssg_to_fsr3.ini").
-- More stability fixes.
-
-**Version 0.50**
-
-- Experimental format conversion support. This mainly includes HDR-enabled games along with mismatched UI render target formats.
-
-**Version 0.41**
-
-- Fixed accidental inclusion of debug overlay.
-
-**Version 0.40**
-
-- Replaced dbghelp.dll with nvngx.dll for better game compatibility. Please delete the old dbghelp.dll version from earlier releases.
-- DisableNvidiaSignatureChecks.reg is now required for usage in games.
-- Various stability fixes.
-
-**Version 0.30**
-
-- Fixed numerous game crashes (e.g. Starfield).
-
-**Version 0.21**
-
-- Fixed a typo in DLL path determination.
-- Added explicit binary license.
-
-**Version 0.20**
-
-- First working build.
-
-**Version 0.10**
-
-- Initial test release.
-
-</details>
+- [Nukem9/dlssg-to-fsr3](https://github.com/Nukem9/dlssg-to-fsr3), the original project
+- [OptiScaler](https://github.com/optiscaler/OptiScaler), including adapted Vulkan-to-DirectX 12 interoperability logic
+- [AMD FidelityFX SDK](https://github.com/GPUOpen-LibrariesAndSDKs/FidelityFX-SDK)
+- Project contributors and compatibility testers
 
 ## License
 
-- [GPLv3](LICENSE.md)
-- [Third party licenses](/resources/binary_dist_license.txt)
+This project is distributed under the GNU General Public License version 3.
+
+- [DLSSG_to_FSR GPLv3](resources/licenses/dlssg_to_fsr_license.txt)
+- [OptiScaler GPLv3](resources/licenses/optiscaler_license.txt)
+- [Third-party licenses](resources/licenses/third_party_licenses.txt)

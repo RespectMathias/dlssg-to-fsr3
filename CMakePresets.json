@@ -1,8 +1,5 @@
 {
   "version": 6,
-  "include": [
-    "CMakeUserEnvVars.json"
-  ],
   "configurePresets": [
     {
       "name": "config-base-vcpkg",
@@ -52,93 +49,94 @@
       "inherits": [
         "config-base-vcpkg",
         "config-base-cmake",
-        "config-base-ninja",
-        "config-envvars"
+        "config-base-ninja"
       ]
     },
     {
-      "name": "final-dtwrapper",
-      "cacheVariables": {
-        "BUILD_OUTPUT_WRAPPER": "DLSSTWEAKS"
-      },
+      "name": "final",
       "inherits": [
         "configuration-final"
       ]
     },
     {
-      "name": "final-universal",
+      "name": "test",
+      "displayName": "Verification x64",
       "cacheVariables": {
-        "BUILD_OUTPUT_WRAPPER": "UNIVERSAL"
+        "BUILD_TESTING": "ON",
+        "VCPKG_MANIFEST_FEATURES": "tests"
       },
       "inherits": [
-        "configuration-final"
-      ]
-    },
-    {
-      "name": "final-nvngxwrapper",
-      "cacheVariables": {
-        "BUILD_OUTPUT_WRAPPER": "NVNGX"
-      },
-      "inherits": [
-        "configuration-final"
+        "final"
       ]
     }
   ],
   "buildPresets": [
     {
-      "name": "final-dtwrapper-debug",
-      "configurePreset": "final-dtwrapper",
+      "name": "final-debug",
+      "configurePreset": "final",
       "configuration": "Debug",
-      "displayName": "DTweaks Debug x64"
+      "displayName": "Final Debug x64"
     },
     {
-      "name": "final-dtwrapper-release",
-      "configurePreset": "final-dtwrapper",
+      "name": "final-release",
+      "configurePreset": "final",
       "configuration": "Release",
-      "displayName": "DTweaks Release x64"
+      "displayName": "Final Release x64"
     },
     {
-      "name": "final-universal-debug",
-      "configurePreset": "final-universal",
+      "name": "test-debug",
+      "configurePreset": "test",
       "configuration": "Debug",
-      "displayName": "Universal Debug x64"
+      "displayName": "Verification Debug x64",
+      "targets": [
+        "AbiTests",
+        "SupportTests",
+        "Dx12NgxE2ETests",
+        "VulkanNgxE2ETests",
+        "BackendParityTests",
+        "FrameGenerationTestbed"
+      ]
     },
     {
-      "name": "final-universal-release",
-      "configurePreset": "final-universal",
+      "name": "test-release",
+      "configurePreset": "test",
       "configuration": "Release",
-      "displayName": "Universal Release x64"
-    },
+      "displayName": "Verification Release x64",
+      "targets": [
+        "AbiTests",
+        "SupportTests",
+        "Dx12NgxE2ETests",
+        "VulkanNgxE2ETests",
+        "BackendParityTests",
+        "FrameGenerationTestbed"
+      ]
+    }
+  ],
+  "testPresets": [
     {
-      "name": "final-nvngxwrapper-debug",
-      "configurePreset": "final-nvngxwrapper",
+      "name": "test-debug",
+      "configurePreset": "test",
       "configuration": "Debug",
-      "displayName": "Nvngx Debug x64"
+      "displayName": "Verification Debug x64",
+      "output": {
+        "outputOnFailure": true
+      }
     },
     {
-      "name": "final-nvngxwrapper-release",
-      "configurePreset": "final-nvngxwrapper",
+      "name": "test-release",
+      "configurePreset": "test",
       "configuration": "Release",
-      "displayName": "Nvngx Release x64"
+      "displayName": "Verification Release x64",
+      "output": {
+        "outputOnFailure": true
+      }
     }
   ],
   "packagePresets": [
     {
-      "name": "final-dtwrapper",
-      "displayName": "Package Final DTweaks",
-      "configurePreset": "final-dtwrapper",
-      "packageDirectory": "${sourceDir}/bin/built-packages"
-    },
-    {
-      "name": "final-universal",
-      "displayName": "Package Final Universal",
-      "configurePreset": "final-universal",
-      "packageDirectory": "${sourceDir}/bin/built-packages"
-    },
-    {
-      "name": "final-nvngxwrapper",
-      "displayName": "Package Final Nvngx",
-      "configurePreset": "final-nvngxwrapper",
+      "name": "final",
+      "displayName": "Package Final",
+      "configurePreset": "final",
       "packageDirectory": "${sourceDir}/bin/built-packages"
     }
   ]

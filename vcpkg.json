@@ -8,5 +8,21 @@
     "spdlog",
     "vulkan"
   ],
+  "features": {
+    "tests": {
+      "description": "Build GoogleTest suites and interactive frame-generation testbed",
+      "dependencies": [
+        "glfw3",
+        "gtest",
+        {
+          "name": "imgui",
+          "features": [
+            "glfw-binding",
+            "opengl3-binding"
+          ]
+        }
+      ]
+    }
+  },
   "builtin-baseline": "53bef8994c541b6561884a8395ea35715ece75db"
 }
