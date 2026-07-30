@@ -177,9 +177,8 @@ Supported configuration values may also be supplied through environment variable
 
 ```mermaid
 flowchart LR
-    subgraph game["Game"]
+    subgraph game_in["Game (Input)"]
         A["Calls DLSS-G<br/>frame generation"]
-        F["Presents generated frame"]
     end
 
     subgraph reforged["DLSSG_to_FSR Reforged"]
@@ -189,6 +188,10 @@ flowchart LR
 
     subgraph ffx["AMD FidelityFX"]
         D["amd_fidelityfx_dx12.dll<br/>generates new frame"]
+    end
+
+    subgraph game_out["Game (Output)"]
+        F["Presents generated frame"]
     end
 
     A --> B --> C --> D --> F
