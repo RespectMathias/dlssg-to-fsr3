@@ -8,6 +8,7 @@ on:
 
 env:
   VCPKG_DEFAULT_TRIPLET: x64-windows-static
+  VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
 
 jobs:
   build-and-test:
@@ -23,6 +24,9 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
+
+      - name: Install Ninja
+        run: choco install ninja -y
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11

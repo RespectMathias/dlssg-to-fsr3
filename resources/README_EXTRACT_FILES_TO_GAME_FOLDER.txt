@@ -1,4 +1,4 @@
-DLSSG TO FSR3 INSTALLATION
+DLSSG TO FSR INSTALLATION
 
 1. Extract every file and folder from this archive into the folder containing
    the game executable.
