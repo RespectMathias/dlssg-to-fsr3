@@ -648,7 +648,7 @@ namespace
 			const float scale = std::min(available.x / static_cast<float>(imageWidth_), available.y / static_cast<float>(imageHeight_));
 			const ImVec2 size(static_cast<float>(imageWidth_) * scale, static_cast<float>(imageHeight_) * scale);
 			ImGui::SetCursorPos(ImVec2((available.x - size.x) * 0.5F, (available.y - size.y) * 0.5F));
-			ImGui::Image(reinterpret_cast<ImTextureID>(static_cast<std::intptr_t>(texture_)), size, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(texture_)), size, ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
 
 			ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x + 14.0F, viewport->Pos.y + 14.0F), ImGuiCond_Always);

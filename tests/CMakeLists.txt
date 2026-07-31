@@ -2,7 +2,7 @@ find_package(GTest CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
-find_program(SPIRV_VAL_EXECUTABLE spirv-val HINTS "$ENV{VULKAN_SDK}/Bin" REQUIRED)
+find_program(SPIRV_VAL_EXECUTABLE spirv-val HINTS "$ENV{VULKAN_SDK}/Bin")
 
 include(GoogleTest)
 
@@ -122,16 +122,18 @@ target_link_libraries(
 )
 configure_test_target(FrameGenerationTestbed)
 
-add_test(
-    NAME Shader.VulkanCopySpirvValid
-    COMMAND "${SPIRV_VAL_EXECUTABLE}" "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
-)
-set_tests_properties(
-    Shader.VulkanCopySpirvValid
-    PROPERTIES
-        LABELS CPU
-        REQUIRED_FILES "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
-)
+if(SPIRV_VAL_EXECUTABLE)
+    add_test(
+        NAME Shader.VulkanCopySpirvValid
+        COMMAND "${SPIRV_VAL_EXECUTABLE}" "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
+    )
+    set_tests_properties(
+        Shader.VulkanCopySpirvValid
+        PROPERTIES
+            LABELS CPU
+            REQUIRED_FILES "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
+    )
+endif()
 
 add_test(
     NAME Testbed.Dx12ToggleHeadless
