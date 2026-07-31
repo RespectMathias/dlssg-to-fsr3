@@ -5,8 +5,29 @@
     "detours",
     "directx-headers",
     "quickdllproxy",
+    "shaderc",
     "spdlog",
     "vulkan"
   ],
-  "builtin-baseline": "53bef8994c541b6561884a8395ea35715ece75db"
+  "features": {
+    "tests": {
+      "description": "Build GoogleTest suites and interactive frame-generation testbed",
+      "dependencies": [
+        "glfw3",
+        "gtest",
+        {
+          "name": "imgui",
+          "features": [
+            "glfw-binding",
+            "opengl3-binding"
+          ]
+        },
+        {
+          "name": "spirv-tools",
+          "features": ["tools"]
+        }
+      ]
+    }
+  },
+  "builtin-baseline": "c93f37f1b1d20963ceab60bcd78b946af902ffe9"
 }

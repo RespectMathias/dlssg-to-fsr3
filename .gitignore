@@ -8,3 +8,7 @@
 
 # Artifacts
 bin/*
+
+.context/
+
+.cache/

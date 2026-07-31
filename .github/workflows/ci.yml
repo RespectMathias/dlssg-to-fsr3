@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  VCPKG_DEFAULT_TRIPLET: x64-windows-static
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: c93f37f1b1d20963ceab60bcd78b946af902ffe9
+
+      - name: Configure
+        run: cmake --preset test
+
+      - name: Build
+        run: cmake --build --preset test-release
+
+      - name: Test (CPU)
+        run: ctest --preset test-release -L CPU --no-tests=error

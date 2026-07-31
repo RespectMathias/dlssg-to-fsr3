@@ -1,0 +1,20 @@
+#version 450
+#extension GL_EXT_samplerless_texture_functions : require
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout(set = 0, binding = 0) uniform texture2D sourceTexture;
+layout(set = 0, binding = 1) uniform writeonly image2D destinationTexture;
+layout(push_constant) uniform CopyConstants
+{
+	uvec2 extent;
+}
+copyConstants;
+
+void main()
+{
+	ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
+	if (any(greaterThanEqual(gl_GlobalInvocationID.xy, copyConstants.extent)))
+		return;
+
+	imageStore(destinationTexture, pixel, texelFetch(sourceTexture, pixel, 0));
+}
