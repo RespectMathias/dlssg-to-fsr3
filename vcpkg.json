@@ -7,10 +7,6 @@
     "quickdllproxy",
     "shaderc",
     "spdlog",
-    {
-      "name": "spirv-tools",
-      "features": ["tools"]
-    },
     "vulkan"
   ],
   "features": {
@@ -25,6 +21,10 @@
             "glfw-binding",
             "opengl3-binding"
           ]
+        },
+        {
+          "name": "spirv-tools",
+          "features": ["tools"]
         }
       ]
     }
