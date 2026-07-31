@@ -56,7 +56,7 @@ if(GLSLC_EXECUTABLE)
 	)
 else()
 	message(WARNING "glslc not found — VulkanCopy shader will not be compiled")
-	file(WRITE "${VULKAN_COPY_SHADER_HEADER}" "static const unsigned char VulkanCopyShader[] = {};\n")
+	file(WRITE "${VULKAN_COPY_SHADER_HEADER}" "static const unsigned char VulkanCopyShader[] = {0};\n")
 endif()
 target_sources(${CURRENT_PROJECT} PRIVATE "${VULKAN_COPY_SHADER_HEADER}")
 
