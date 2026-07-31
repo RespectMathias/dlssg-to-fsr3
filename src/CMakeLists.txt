@@ -40,18 +40,24 @@ add_library(
 )
 
 set(VULKAN_COPY_SHADER_HEADER "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopyShader.h")
-add_custom_command(
-	OUTPUT "${VULKAN_COPY_SHADER_HEADER}"
-	COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/generated"
-	COMMAND "$<TARGET_FILE:Vulkan::glslc>" -fshader-stage=compute
-		"${SOURCE_DIR}/shaders/VulkanCopy.comp" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv"
-	COMMAND "${CMAKE_COMMAND}"
-		-DINPUT=${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv
-		-DOUTPUT=${VULKAN_COPY_SHADER_HEADER}
-		-DVARIABLE=VulkanCopyShader
-		-P "${SOURCE_DIR}/EmbedShader.cmake"
-	DEPENDS "${SOURCE_DIR}/shaders/VulkanCopy.comp" "${SOURCE_DIR}/EmbedShader.cmake"
-)
+find_program(GLSLC_EXECUTABLE glslc HINTS "${CMAKE_CURRENT_LIST_DIR}/../bin/test/vcpkg_installed/x64-windows-static/tools/spirv-tools" "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_TOOLS}/Bin")
+if(GLSLC_EXECUTABLE)
+	add_custom_command(
+		OUTPUT "${VULKAN_COPY_SHADER_HEADER}"
+		COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/generated"
+		COMMAND "${GLSLC_EXECUTABLE}" -fshader-stage=compute
+			"${SOURCE_DIR}/shaders/VulkanCopy.comp" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv"
+		COMMAND "${CMAKE_COMMAND}"
+			-DINPUT=${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv
+			-DOUTPUT=${VULKAN_COPY_SHADER_HEADER}
+			-DVARIABLE=VulkanCopyShader
+			-P "${SOURCE_DIR}/EmbedShader.cmake"
+		DEPENDS "${SOURCE_DIR}/shaders/VulkanCopy.comp" "${SOURCE_DIR}/EmbedShader.cmake"
+	)
+else()
+	message(WARNING "glslc not found — VulkanCopy shader will not be compiled")
+	file(WRITE "${VULKAN_COPY_SHADER_HEADER}" "static const unsigned char VulkanCopyShader[] = {};\n")
+endif()
 target_sources(${CURRENT_PROJECT} PRIVATE "${VULKAN_COPY_SHADER_HEADER}")
 
 target_precompile_headers(

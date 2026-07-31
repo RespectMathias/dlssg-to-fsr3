@@ -2,7 +2,7 @@ find_package(GTest CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
-find_program(SPIRV_VAL_EXECUTABLE spirv-val HINTS "$ENV{VULKAN_SDK}/Bin")
+find_program(SPIRV_VAL_EXECUTABLE spirv-val HINTS "${CMAKE_CURRENT_LIST_DIR}/../bin/test/vcpkg_installed/x64-windows-static/tools/spirv-tools" "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_TOOLS}/Bin")
 
 include(GoogleTest)
 
