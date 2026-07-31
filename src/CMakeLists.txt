@@ -43,7 +43,7 @@ set(VULKAN_COPY_SHADER_HEADER "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopyS
 add_custom_command(
 	OUTPUT "${VULKAN_COPY_SHADER_HEADER}"
 	COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/generated"
-	COMMAND Vulkan::glslc -fshader-stage=compute
+	COMMAND "$<TARGET_FILE:Vulkan::glslc>" -fshader-stage=compute
 		"${SOURCE_DIR}/shaders/VulkanCopy.comp" -o "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv"
 	COMMAND "${CMAKE_COMMAND}"
 		-DINPUT=${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopy.spv
