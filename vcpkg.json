@@ -6,6 +6,7 @@
     "directx-headers",
     "quickdllproxy",
     "spdlog",
+    "spirv-tools",
     "vulkan"
   ],
   "features": {
