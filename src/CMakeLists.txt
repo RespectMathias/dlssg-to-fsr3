@@ -55,8 +55,7 @@ if(GLSLC_EXECUTABLE)
 		DEPENDS "${SOURCE_DIR}/shaders/VulkanCopy.comp" "${SOURCE_DIR}/EmbedShader.cmake"
 	)
 else()
-	message(WARNING "glslc not found — VulkanCopy shader will not be compiled")
-	file(WRITE "${VULKAN_COPY_SHADER_HEADER}" "static const unsigned char VulkanCopyShader[] = {0};\n")
+	message(FATAL_ERROR "glslc not found. Install spirv-tools or set VULKAN_SDK/VULKAN_TOOLS environment variable.")
 endif()
 target_sources(${CURRENT_PROJECT} PRIVATE "${VULKAN_COPY_SHADER_HEADER}")
 
