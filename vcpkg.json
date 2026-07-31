@@ -5,8 +5,12 @@
     "detours",
     "directx-headers",
     "quickdllproxy",
+    "shaderc",
     "spdlog",
-    "spirv-tools",
+    {
+      "name": "spirv-tools",
+      "features": ["tools"]
+    },
     "vulkan"
   ],
   "features": {

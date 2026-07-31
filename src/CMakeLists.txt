@@ -40,7 +40,15 @@ add_library(
 )
 
 set(VULKAN_COPY_SHADER_HEADER "${CMAKE_CURRENT_BINARY_DIR}/generated/VulkanCopyShader.h")
-find_program(GLSLC_EXECUTABLE glslc HINTS "${CMAKE_CURRENT_LIST_DIR}/../bin/test/vcpkg_installed/x64-windows-static/tools/spirv-tools" "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_TOOLS}/Bin")
+find_program(
+	GLSLC_EXECUTABLE
+	glslc
+	HINTS
+		"${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/shaderc"
+		"$ENV{VULKAN_SDK}/Bin"
+		"$ENV{VULKAN_TOOLS}/Bin"
+)
+
 if(GLSLC_EXECUTABLE)
 	add_custom_command(
 		OUTPUT "${VULKAN_COPY_SHADER_HEADER}"
@@ -55,7 +63,7 @@ if(GLSLC_EXECUTABLE)
 		DEPENDS "${SOURCE_DIR}/shaders/VulkanCopy.comp" "${SOURCE_DIR}/EmbedShader.cmake"
 	)
 else()
-	message(FATAL_ERROR "glslc not found. Install spirv-tools or set VULKAN_SDK/VULKAN_TOOLS environment variable.")
+	message(FATAL_ERROR "glslc not found. Install shaderc or set VULKAN_SDK/VULKAN_TOOLS.")
 endif()
 target_sources(${CURRENT_PROJECT} PRIVATE "${VULKAN_COPY_SHADER_HEADER}")
 

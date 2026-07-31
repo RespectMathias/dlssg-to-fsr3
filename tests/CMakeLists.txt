@@ -2,7 +2,18 @@ find_package(GTest CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
-find_program(SPIRV_VAL_EXECUTABLE spirv-val HINTS "${CMAKE_CURRENT_LIST_DIR}/../bin/test/vcpkg_installed/x64-windows-static/tools/spirv-tools" "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_TOOLS}/Bin")
+find_program(
+	SPIRV_VAL_EXECUTABLE
+	spirv-val
+	HINTS
+		"${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/tools/spirv-tools"
+		"$ENV{VULKAN_SDK}/Bin"
+		"$ENV{VULKAN_TOOLS}/Bin"
+)
+
+if(NOT SPIRV_VAL_EXECUTABLE)
+    message(FATAL_ERROR "spirv-val not found. Install spirv-tools with the tools feature.")
+endif()
 
 include(GoogleTest)
 
@@ -122,18 +133,16 @@ target_link_libraries(
 )
 configure_test_target(FrameGenerationTestbed)
 
-if(SPIRV_VAL_EXECUTABLE)
-    add_test(
-        NAME Shader.VulkanCopySpirvValid
-        COMMAND "${SPIRV_VAL_EXECUTABLE}" "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
-    )
-    set_tests_properties(
-        Shader.VulkanCopySpirvValid
-        PROPERTIES
-            LABELS CPU
-            REQUIRED_FILES "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
-    )
-endif()
+add_test(
+    NAME Shader.VulkanCopySpirvValid
+    COMMAND "${SPIRV_VAL_EXECUTABLE}" "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
+)
+set_tests_properties(
+    Shader.VulkanCopySpirvValid
+    PROPERTIES
+        LABELS CPU
+        REQUIRED_FILES "${CMAKE_BINARY_DIR}/src/generated/VulkanCopy.spv"
+)
 
 add_test(
     NAME Testbed.Dx12ToggleHeadless
